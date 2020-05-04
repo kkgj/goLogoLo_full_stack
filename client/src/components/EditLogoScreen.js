@@ -170,7 +170,8 @@ class EditLogoScreen extends Component {
                                                     borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : data.logo.borderWidth) + "px",
                                                     borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : data.logo.borderRadius) + "px",
                                                     padding: (this.state.renderPadding ? this.state.renderPadding : data.logo.padding) + "px",
-                                                    margin: (this.state.renderMargin ? this.state.renderMargin : data.logo.margin) + "px"
+                                                    margin: (this.state.renderMargin ? this.state.renderMargin : data.logo.margin) + "px",
+                                                    whiteSpace: "pre"
                                                 }}>{this.state.renderText ? this.state.renderText :  data.logo.text}</span>
                                             </div>
                                             {loading && <p>Loading...</p>}

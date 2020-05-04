@@ -36,15 +36,15 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: "",
-            renderColor: "",
-            renderBackgroundColor: "",
-            renderBorderColor: "",
-            renderBorderWidth: "",
-            renderBorderRadius: "",
-            renderFontSize: "",
-            renderPadding: "",
-            renderMargin: ""
+            renderText: "Default Logo",
+            renderColor: "#1f3eff",
+            renderBackgroundColor: "#6BFF33",
+            renderBorderColor: "#AB33FF",
+            renderBorderWidth: "20",
+            renderBorderRadius: "20",
+            renderFontSize: "50",
+            renderPadding: "10",
+            renderMargin: "10"
         }
     }
 
@@ -82,37 +82,37 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="text">Text:</label>
                                         <input type="text" className="form-control" name="text" ref={node => {
                                             text = node;
-                                        }} onChange={() => this.setState({renderText: text.value})} placeholder="Text" />
+                                        }} onChange={() => this.setState({renderText: text.value})} placeholder="Text" defaultValue={this.state.renderText}/>
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" ref={node => {
                                             color = node;
-                                        }}onChange={() => this.setState({renderColor: color.value})} placeholder="Color" />
+                                        }}onChange={() => this.setState({renderColor: color.value})} placeholder="Color" defaultValue={this.state.renderColor}/>
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="backgroundColor">Background Color:</label>
                                         <input type="color" className="form-control" name="backgroundColor" ref={node => {
                                             backgroundColor = node;
-                                        }} onChange={() => this.setState({renderBackgroundColor: backgroundColor.value})} placeholder="Background Color" />
+                                        }} onChange={() => this.setState({renderBackgroundColor: backgroundColor.value})} placeholder="Background Color" defaultValue={this.state.renderBackgroundColor}/> 
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="borderColor">Border Color:</label>
                                         <input type="color" className="form-control" name="borderColor" ref={node => {
                                             borderColor = node;
-                                        }} onChange={() => this.setState({renderBorderColor: borderColor.value})} placeholder="Border Color" />
+                                        }} onChange={() => this.setState({renderBorderColor: borderColor.value})} placeholder="Border Color" defaultValue={this.state.renderBorderColor}/>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="fontSize">Font Size:</label>
                                         <input type="text" onInput={()=>{fontSize.value = clamp(fontSize.value, 0, 144);}} className="form-control" name="fontSize" ref={node => {
                                             fontSize = node;
-                                        }} onChange={() => this.setState({renderFontSize: parseInt(fontSize.value)})} placeholder="Font Size" />
+                                        }} onChange={() => this.setState({renderFontSize: parseInt(fontSize.value)})} placeholder="Font Size" defaultValue={this.state.renderFontSize}/>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="borderWidth">Border Width:</label>
                                         <input type="number" onInput={()=>{borderWidth.value = clamp(borderWidth.value, 0, 100);}} className="form-control" name="borderWidth" ref={node => {
                                             borderWidth = node;
-                                        }} onChange={() => this.setState({renderBorderWidth: parseInt(borderWidth.value)})} placeholder="Border Width" />
+                                        }} onChange={() => this.setState({renderBorderWidth: parseInt(borderWidth.value)})} placeholder="Border Width" defaultValue={this.state.renderBorderWidth}/>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="borderRadius">Border Radius:</label>
@@ -145,7 +145,8 @@ class CreateLogoScreen extends Component {
                                         borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 5) + "px",
                                         borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 5) + "px",
                                         padding: (this.state.renderPadding ? this.state.renderPadding : 0) + "px",
-                                        margin: (this.state.renderMargin ? this.state.renderMargin : 0) + "px"
+                                        margin: (this.state.renderMargin ? this.state.renderMargin : 0) + "px",
+                                        whiteSpace: "pre"
                                     }}>{this.state.renderText ? this.state.renderText : "New Logo"}</span>
                                 </div>
                                 {loading && <p>Loading...</p>}

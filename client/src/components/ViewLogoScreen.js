@@ -100,7 +100,8 @@ class ViewLogoScreen extends Component {
                                             borderWidth: data.logo.borderWidth + "px",
                                             borderRadius: data.logo.borderRadius + "px",
                                             padding: data.logo.padding + "px",
-                                            margin: data.logo.margin + "px"
+                                            margin: data.logo.margin + "px",
+                                            whiteSpace: "pre"
                                         }}>{data.logo.text}</span>
                                     </div>
                                 </div>
