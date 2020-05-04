@@ -40,9 +40,9 @@ class CreateLogoScreen extends Component {
             renderColor: "#1f3eff",
             renderBackgroundColor: "#6BFF33",
             renderBorderColor: "#AB33FF",
-            renderBorderWidth: "20",
-            renderBorderRadius: "20",
-            renderFontSize: "50",
+            renderBorderWidth: "10",
+            renderBorderRadius: "0",
+            renderFontSize: "40",
             renderPadding: "10",
             renderMargin: "10"
         }
@@ -118,36 +118,36 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="borderRadius">Border Radius:</label>
                                         <input type="number" onInput={()=>{borderRadius.value = clamp(borderRadius.value, 0, 100);}} className="form-control" name="borderRadius" ref={node => {
                                             borderRadius = node;
-                                        }} onChange={() => this.setState({renderBorderRadius: parseInt(borderRadius.value)})} placeholder="Border Radius" />
+                                        }} onChange={() => this.setState({renderBorderRadius: parseInt(borderRadius.value)})} placeholder="Border Radius" defaultValue={this.state.renderBorderRadius}/>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="padding">Padding:</label>
                                         <input type="number" onInput={()=>{padding.value = clamp(padding.value, 0, 100);}} className="form-control" name="padding" ref={node => {
                                             padding = node;
-                                        }} onChange={() => this.setState({renderPadding: parseInt(padding.value)})} placeholder="Padding" />
+                                        }} onChange={() => this.setState({renderPadding: parseInt(padding.value)})} placeholder="Padding" defaultValue={this.state.renderPadding}/>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="margin">Margin:</label>
                                         <input type="number" onInput={()=>{margin.value = clamp(margin.value, 0, 100);}} className="form-control" name="margin" ref={node => {
                                             margin = node;
-                                        }} onChange={() => this.setState({renderMargin: parseInt(margin.value)})} placeholder="Margin" />
+                                        }} onChange={() => this.setState({renderMargin: parseInt(margin.value)})} placeholder="Margin" defaultValue={this.state.renderMargin}/>
                                     </div>
                                     <button type="submit" className="btn btn-success">Submit</button>
                                 </form>
                                 <div className="col-6">
                                     <span style={{
                                         display: "inline-block",
-                                        color: this.state.renderColor ? this.state.renderColor : "#000000",
-                                        backgroundColor: this.state.renderBackgroundColor ? this.state.renderBackgroundColor : "#FFFFFF",
-                                        borderColor: this.state.renderBorderColor ? this.state.renderBorderColor : "#000000",
+                                        color: this.state.renderColor ? this.state.renderColor : "#1f3eff",
+                                        backgroundColor: this.state.renderBackgroundColor ? this.state.renderBackgroundColor : "#6BFF33",
+                                        borderColor: this.state.renderBorderColor ? this.state.renderBorderColor : "#AB33FF",
                                         borderStyle: "solid",
-                                        fontSize: (this.state.renderFontSize ? this.state.renderFontSize : 12) + "pt",
-                                        borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 5) + "px",
-                                        borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 5) + "px",
-                                        padding: (this.state.renderPadding ? this.state.renderPadding : 0) + "px",
-                                        margin: (this.state.renderMargin ? this.state.renderMargin : 0) + "px",
+                                        fontSize: (this.state.renderFontSize ? this.state.renderFontSize : 40) + "pt",
+                                        borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 10) + "px",
+                                        borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 0) + "px",
+                                        padding: (this.state.renderPadding ? this.state.renderPadding : 10) + "px",
+                                        margin: (this.state.renderMargin ? this.state.renderMargin : 10) + "px",
                                         whiteSpace: "pre"
-                                    }}>{this.state.renderText ? this.state.renderText : "New Logo"}</span>
+                                    }}>{this.state.renderText ? this.state.renderText : "Default Logo"}</span>
                                 </div>
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}
