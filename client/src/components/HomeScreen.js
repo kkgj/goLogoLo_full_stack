@@ -29,7 +29,7 @@ class HomeScreen extends Component {
 
     render() {
         return (
-            <Query pollInterval={500} query={GET_LOGOS}>
+            <Query fetchPolicy='network-only' pollInterval={500} query={GET_LOGOS}>
                 {({ loading, error, data }) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
