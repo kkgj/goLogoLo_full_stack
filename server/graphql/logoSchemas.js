@@ -43,6 +43,12 @@ var logoType = new GraphQLObjectType({
             margin: {
                 type: GraphQLInt
             },
+            height: {
+                type: GraphQLInt
+            },
+            width: {
+                type: GraphQLInt
+            },
             lastUpdate: {
                 type: GraphQLDate
             }
@@ -149,7 +155,13 @@ var mutation = new GraphQLObjectType({
                     },
                     margin: {
                         type: new GraphQLNonNull(GraphQLInt)
-                    }
+                    },
+                    height: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
+                    width: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
                 },
                 resolve: function (root, params) {
                     const logoModel = new LogoModel(params);
@@ -193,14 +205,21 @@ var mutation = new GraphQLObjectType({
                     },
                     margin: {
                         type: new GraphQLNonNull(GraphQLInt)
-                    }
+                    },
+                    height: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
+                    width: {
+                        type: new GraphQLNonNull(GraphQLInt)
+                    },
                 },
                 resolve(root, params) {
                     return LogoModel.findByIdAndUpdate(params.id,
                         { text: params.text, color: params.color, fontSize: params.fontSize,
                             backgroundColor : params.backgroundColor, borderColor : params.borderColor,
                             borderWidth: params.borderWidth, borderRadius: params.borderRadius,
-                            padding: params.padding, margin: params.margin, lastUpdate: new Date() }, function (err) {
+                            padding: params.padding, margin: params.margin, height: params.height,
+                            width: params.width, lastUpdate: new Date() }, function (err) {
                         if (err) return next(err);
                     });
                 }

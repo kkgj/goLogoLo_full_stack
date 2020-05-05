@@ -14,7 +14,9 @@ const ADD_LOGO = gql`
         $borderWidth: Int!,
         $borderRadius: Int!,
         $padding: Int!,
-        $margin: Int!) {
+        $margin: Int!,
+        $height: Int!,
+        $width: Int!) {
         addLogo(
             text: $text,
             color: $color,
@@ -24,7 +26,9 @@ const ADD_LOGO = gql`
             borderWidth: $borderWidth,
             borderRadius: $borderRadius,
             padding: $padding,
-            margin: $margin) {
+            margin: $margin,
+            height: $height,
+            width: $width) {
             _id
         }
     }
@@ -45,18 +49,22 @@ class CreateLogoScreen extends Component {
             renderFontSize: "40",
             renderPadding: "10",
             renderMargin: "10",
+            renderHeight: "130",
+            renderWidth: "330",
             buttonDisabled: false,
             errorMessage: "",
             fontSizeMessage: "",
             borderRadiusMessage: "",
             borderWidthMessage: "",
             paddingMessage: "",
-            marginMessage: ""
+            marginMessage: "",
+            heightMessage: "",
+            widthMessage: ""
         }
     }
 
     render() {
-        let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
+        let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width;
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
@@ -71,10 +79,9 @@ class CreateLogoScreen extends Component {
                             <div className="panel-body row">
                                 <form className="col-6" onSubmit={e => {
                                     e.preventDefault();
-                                    addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
-                                                            backgroundColor: backgroundColor.value, borderColor: borderColor.value,
-                                                            borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value),
-                                                            padding: parseInt(padding.value), margin: parseInt(margin.value) } });
+                                    addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value), backgroundColor: backgroundColor.value, 
+                                        borderColor: borderColor.value, borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value), padding: 
+                                        parseInt(padding.value), margin: parseInt(margin.value), height: parseInt(height.value), width: parseInt(width.value) } });
                                     text.value = "";
                                     color.value = "";
                                     fontSize.value = "";
@@ -84,6 +91,8 @@ class CreateLogoScreen extends Component {
                                     borderRadius.value = "";
                                     padding.value = "";
                                     margin.value = "";
+                                    height.value = "";
+                                    width.value = "";
                                 }}>
                                     <div className="form-group col-8">
                                         <label htmlFor="text">Text:</label>
@@ -158,9 +167,29 @@ class CreateLogoScreen extends Component {
                                         <input type="number" onInput={()=>{margin.value = clamp(margin.value, 0, 100);}} className="form-control" name="margin" ref={node => {
                                             margin = node;
                                         }} onChange={() => margin.value.trim().length < 1 ? this.setState({ buttonDisabled: true, marginMessage: "Margin cannot be empty" }) 
-                                        : this.setState({renderMargin: margin.value, buttonDisabled: false, paddingMessage: ""})} placeholder="Margin" defaultValue={this.state.renderMargin}/>
+                                        : this.setState({renderMargin: margin.value, buttonDisabled: false, marginMessage: ""})} placeholder="Margin" defaultValue={this.state.renderMargin}/>
                                         <p style={{ color: 'red' }}>
                                             {this.state.marginMessage}
+                                        </p>
+                                    </div>
+                                    <div className="form-group col-8">
+                                        <label htmlFor="height">Height:</label>
+                                        <input type="number" onInput={()=>{height.value = clamp(height.value, 0, 800);}} className="form-control" name="height" ref={node => {
+                                            height = node;
+                                        }} onChange={() => height.value.trim().length < 1 ? this.setState({ buttonDisabled: true, heightMessage: "Height cannot be empty" }) 
+                                        : this.setState({renderHeight: height.value, buttonDisabled: false, heightMessage: ""})} placeholder="Height" defaultValue={this.state.renderHeight}/>
+                                        <p style={{ color: 'red' }}>
+                                            {this.state.heightMessage}
+                                        </p>
+                                    </div>
+                                    <div className="form-group col-8">
+                                        <label htmlFor="width">Width:</label>
+                                        <input type="number" onInput={()=>{width.value = clamp(width.value, 0, 1000);}} className="form-control" name="height" ref={node => {
+                                            width = node;
+                                        }} onChange={() => width.value.trim().length < 1 ? this.setState({ buttonDisabled: true, widthMessage: "Width cannot be empty" }) 
+                                        : this.setState({renderWidth: width.value, buttonDisabled: false, widthMessage: ""})} placeholder="Width" defaultValue={this.state.renderWidth}/>
+                                        <p style={{ color: 'red' }}>
+                                            {this.state.widthMessage}
                                         </p>
                                     </div>
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
@@ -177,6 +206,8 @@ class CreateLogoScreen extends Component {
                                         borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 0) + "px",
                                         padding: (this.state.renderPadding ? this.state.renderPadding : 10) + "px",
                                         margin: (this.state.renderMargin ? this.state.renderMargin : 10) + "px",
+                                        height: (this.state.renderHeight ? this.state.renderHeight : 130) + "px",
+                                        width: (this.state.renderWidth ? this.state.renderWidth : 330) + "px",
                                         whiteSpace: "pre"
                                     }}>{this.state.renderText ? this.state.renderText : "Default Logo"}</span>
                                 </div>
