@@ -63,7 +63,14 @@ class EditLogoScreen extends Component {
             renderBorderRadius: "",
             renderFontSize: "",
             renderPadding: "",
-            renderMargin: ""
+            renderMargin: "",
+            buttonDisabled: false,
+            errorMessage: "",
+            fontSizeMessage: "",
+            borderRadiusMessage: "",
+            borderWidthMessage: "",
+            paddingMessage: "",
+            marginMessage: ""
         }
     }
 
@@ -107,7 +114,11 @@ class EditLogoScreen extends Component {
                                                     <label htmlFor="text">Text:</label>
                                                     <input type="text" className="form-control" name="text" ref={node => {
                                                         text = node;
-                                                    }} onChange={() => this.setState({renderText: text.value})} placeholder="Text" defaultValue={data.logo.text} />
+                                                    }} onChange={() => text.value.trim().length < 1 ? this.setState({ buttonDisabled: true, errorMessage: "Text cannot be empty", renderText: text.value }) 
+                                                    : this.setState({renderText: text.value, buttonDisabled: false, errorMessage: ""})} placeholder="Text" defaultValue={data.logo.text} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.errorMessage}
+                                                    </p>
                                                 </div>
                                                 <div className="form-group col-4">
                                                     <label htmlFor="color">Color:</label>
@@ -131,33 +142,53 @@ class EditLogoScreen extends Component {
                                                     <label htmlFor="fontSize">Font Size:</label>
                                                     <input type="text" onInput={()=>{fontSize.value = clamp(fontSize.value, 0, 144);}} className="form-control" name="fontSize" ref={node => {
                                                         fontSize = node;
-                                                    }} onChange={() => this.setState({renderFontSize: parseInt(fontSize.value)})} placeholder="Font Size" defaultValue={data.logo.fontSize} />
+                                                    }} onChange={() => fontSize.value.trim().length < 1 ? this.setState({renderFontSize: parseInt(fontSize.value), buttonDisabled: true, fontSizeMessage: "Font Size cannot be empty"}) 
+                                                    : this.setState({renderFontSize: parseInt(fontSize.value), buttonDisabled: false, fontSizeMessage: ""})} placeholder="Font Size" defaultValue={data.logo.fontSize} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.fontSizeMessage}
+                                                    </p>
                                                 </div>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="borderWidth">Border Width:</label>
                                                     <input type="number" onInput={()=>{borderWidth.value = clamp(borderWidth.value, 0, 100);}} className="form-control" name="borderWidth" ref={node => {
                                                         borderWidth = node;
-                                                    }} onChange={() => this.setState({renderBorderWidth: parseInt(borderWidth.value)})} placeholder="Border Width" defaultValue={data.logo.borderWidth} />
+                                                    }} onChange={() => borderWidth.value.trim().length < 1 ? this.setState({renderBorderWidth: parseInt(borderWidth.value), buttonDisabled: true, borderWidthMessage: "Border Width cannot be empty"})
+                                                    : this.setState({renderBorderWidth: parseInt(borderWidth.value), buttonDisabled: false, borderWidthMessage: ""})} placeholder="Border Width" defaultValue={data.logo.borderWidth} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.borderWidthMessage}
+                                                    </p>
                                                 </div>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="borderRadius">Border Radius:</label>
                                                     <input type="number" onInput={()=>{borderRadius.value = clamp(borderRadius.value, 0, 100);}} className="form-control" name="borderRadius" ref={node => {
                                                         borderRadius = node;
-                                                    }} onChange={() => this.setState({renderBorderRadius: parseInt(borderRadius.value)})} placeholder="Border Radius" defaultValue={data.logo.borderRadius} />
+                                                    }} onChange={() => borderRadius.value.trim().length < 1 ? this.setState({renderBorderRadius: parseInt(borderRadius.value), buttonDisabled: true, borderRadiusMessage: "Border Radius cannot be empty"}) 
+                                                    : this.setState({renderBorderRadius: parseInt(borderRadius.value), buttonDisabled: false, borderRadiusMessage: ""})} placeholder="Border Radius" defaultValue={data.logo.borderRadius} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.borderRadiusMessage}
+                                                    </p>
                                                 </div>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="padding">Padding:</label>
                                                     <input type="number" onInput={()=>{padding.value = clamp(padding.value, 0, 100);}} className="form-control" name="padding" ref={node => {
                                                         padding = node;
-                                                    }} onChange={() => this.setState({renderPadding: parseInt(padding.value)})} placeholder="Padding" defaultValue={data.logo.padding} />
+                                                    }} onChange={() => padding.value.trim().length < 1 ? this.setState({renderPadding: parseInt(padding.value), buttonDisabled: true, paddingMessage: "Padding cannot be empty"}) 
+                                                    : this.setState({renderPadding: parseInt(padding.value), buttonDisabled: false, paddingMessage: ""})} placeholder="Padding" defaultValue={data.logo.padding} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.paddingMessage}
+                                                    </p>
                                                 </div>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="margin">Margin:</label>
                                                     <input type="number" onInput={()=>{margin.value = clamp(margin.value, 0, 100);}} className="form-control" name="margin" ref={node => {
                                                         margin = node;
-                                                    }} onChange={() => this.setState({renderMargin: parseInt(margin.value)})} placeholder="Margin" defaultValue={data.logo.margin} />
+                                                    }} onChange={() => margin.value.trim().length < 1 ? this.setState({renderMargin: parseInt(margin.value), buttonDisabled: true, marginMessage: "Margin cannot be empty"}) 
+                                                    : this.setState({renderMargin: parseInt(margin.value), buttonDisabled: false, marginMessage: ""})} placeholder="Margin" defaultValue={data.logo.margin} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.marginMessage}
+                                                    </p>
                                                 </div>
-                                                <button type="submit" className="btn btn-success">Submit</button>
+                                                <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
                                             </form>
                                             <div className="col-6">
                                                 <span style={{
