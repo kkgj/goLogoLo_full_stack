@@ -206,11 +206,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="image">Image:</label>
                                         <input type="text" className="form-control" name="image" ref={node => {
                                             image = node;
-                                        }} onChange={() => image.value.trim().length < 1 ? this.setState({ renderImage: image.value, buttonDisabled: true, imageMessage: "Image cannot be empty" }) 
-                                        : this.setState({renderImage: image.value, buttonDisabled: false, imageMessage: ""})} placeholder="Image" defaultValue={this.state.renderImage}/>
-                                        <p style={{ color: 'red' }}>
-                                            {this.state.imageMessage}
-                                        </p>
+                                        }} onChange={() => this.setState({ renderImage: image.value })} placeholder="Image" defaultValue={this.state.renderImage}/>
                                     </div>
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
                                 </form>
@@ -244,7 +240,7 @@ class CreateLogoScreen extends Component {
                                                 }}
                                                 >
                                                 <img 
-                                                    src={(this.state.renderImage ? this.state.renderImage : "https://i.picsum.photos/id/871/200/300.jpg")}
+                                                    src={this.state.renderImage}
                                                     draggable="false"
                                                     //alt="new"
                                                     />
