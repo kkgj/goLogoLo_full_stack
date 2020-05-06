@@ -66,7 +66,9 @@ class CreateLogoScreen extends Component {
             widthMessage: "",
             imageMessage: "",
             x: 0,
-            y: -300
+            y: 0,
+            imageX: 10,
+            imageY: 10
         }
     }
 
@@ -227,14 +229,28 @@ class CreateLogoScreen extends Component {
                                         height: (this.state.renderHeight ? this.state.renderHeight : 130) + "px",
                                         width: (this.state.renderWidth ? this.state.renderWidth : 330) + "px",
                                         whiteSpace: "pre"
-                                    }}><div></div>
-                                       <div>
-                                           <img 
-                                            src={(this.state.renderImage ? this.state.renderImage : "https://i.picsum.photos/id/871/200/300.jpg")}
-                                            alt="new"
-                                            />
+                                    }}>
+                                        <div>
+                                            <Rnd
+                                                //size={{ width: 100,  height: 400 }}
+                                                position={{ x: this.state.imageX, y: this.state.imageY }}
+                                                onDragStop={(e, d) => { this.setState({ imageX: d.x, imageY: d.y }) }}
+                                                onResizeStop={(e, direction, ref, delta, position) => {
+                                                    this.setState({
+                                                    width: ref.style.width,
+                                                    height: ref.style.height,
+                                                    ...position,
+                                                    });
+                                                }}
+                                                >
+                                                <img 
+                                                    src={(this.state.renderImage ? this.state.renderImage : "https://i.picsum.photos/id/871/200/300.jpg")}
+                                                    alt="new"
+                                                    />
+                                            </Rnd>
                                         </div>
-                                        <div><Rnd
+                                        <div>
+                                            <Rnd
                                             //size={{ width: 100,  height: 400 }}
                                             position={{ x: this.state.x, y: this.state.y }}
                                             onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
