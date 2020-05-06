@@ -109,7 +109,7 @@ class ViewLogoScreen extends Component {
                                             margin: data.logo.margin + "px",
                                             whiteSpace: "pre",
                                             height: data.logo.height + "px",
-                                            width: data.width + "px"
+                                            width: data.logo.width + "px"
                                         }}>{data.logo.text}</span>
                                     </div>
                                 </div>

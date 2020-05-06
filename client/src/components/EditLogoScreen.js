@@ -17,6 +17,8 @@ const GET_LOGO = gql`
             borderRadius
             padding
             margin
+            height
+            width
         }
     }
 `;
@@ -203,19 +205,19 @@ class EditLogoScreen extends Component {
                                                     <input type="number" onInput={()=>{height.value = clamp(height.value, 0, 800);}} className="form-control" name="height" ref={node => {
                                                         height = node;
                                                     }} onChange={() => height.value.trim().length < 1 ? this.setState({renderHeight: parseInt(height.value), buttonDisabled: true, heightMessage: "Height cannot be empty"}) 
-                                                    : this.setState({renderHeight: parseInt(height.value), buttonDisabled: false, widthMessage: ""})} placeholder="Height" defaultValue={data.logo.height} />
+                                                    : this.setState({renderHeight: parseInt(height.value), buttonDisabled: false, heightMessage: ""})} placeholder="Height" defaultValue={data.logo.height} />
                                                     <p style={{ color: 'red' }}>
                                                         {this.state.heightMessage}
                                                     </p>
                                                 </div>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="width">Width:</label>
-                                                    <input type="number" onInput={()=>{height.value = clamp(width.value, 0, 1000);}} className="form-control" name="width" ref={node => {
+                                                    <input type="number" onInput={()=>{width.value = clamp(width.value, 0, 1000);}} className="form-control" name="width" ref={node => {
                                                         width = node;
-                                                    }} onChange={() => width.value.trim().length < 1 ? this.setState({renderWidth: parseInt(height.value), buttonDisabled: true, widthMessage: "Width cannot be empty"}) 
+                                                    }} onChange={() => width.value.trim().length < 1 ? this.setState({renderWidth: parseInt(width.value), buttonDisabled: true, widthMessage: "Width cannot be empty"}) 
                                                     : this.setState({renderWidth: parseInt(width.value), buttonDisabled: false, widthMessage: ""})} placeholder="Width" defaultValue={data.logo.width} />
                                                     <p style={{ color: 'red' }}>
-                                                        {this.state.heightMessage}
+                                                        {this.state.widthMessage}
                                                     </p>
                                                 </div>
                                                 <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
@@ -232,6 +234,8 @@ class EditLogoScreen extends Component {
                                                     borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : data.logo.borderRadius) + "px",
                                                     padding: (this.state.renderPadding ? this.state.renderPadding : data.logo.padding) + "px",
                                                     margin: (this.state.renderMargin ? this.state.renderMargin : data.logo.margin) + "px",
+                                                    width: (this.state.renderWidth ? this.state.renderWidth : data.logo.width) + "px",
+                                                    height: (this.state.renderHeight ? this.state.renderHeight : data.logo.height) + "px",
                                                     whiteSpace: "pre"
                                                 }}>{this.state.renderText ? this.state.renderText : data.logo.text}</span>
                                             </div>
