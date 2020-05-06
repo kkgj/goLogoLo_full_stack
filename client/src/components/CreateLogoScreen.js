@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 import { clamp } from '../utils/utlity';
-import Rnd from 'react-rnd';
+import { Rnd } from 'react-rnd';
 
 const ADD_LOGO = gql`
     mutation AddLogo(
@@ -64,7 +64,9 @@ class CreateLogoScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            imageMessage: ""
+            imageMessage: "",
+            x: 0,
+            y: -300
         }
     }
 
@@ -225,12 +227,29 @@ class CreateLogoScreen extends Component {
                                         height: (this.state.renderHeight ? this.state.renderHeight : 130) + "px",
                                         width: (this.state.renderWidth ? this.state.renderWidth : 330) + "px",
                                         whiteSpace: "pre"
-                                    }}><div>{this.state.renderText ? this.state.renderText : "Default Logo"}</div>
+                                    }}><div></div>
                                        <div>
                                            <img 
                                             src={(this.state.renderImage ? this.state.renderImage : "https://i.picsum.photos/id/871/200/300.jpg")}
                                             alt="new"
                                             />
+                                        </div>
+                                        <div><Rnd
+                                            //size={{ width: 100,  height: 400 }}
+                                            position={{ x: this.state.x, y: this.state.y }}
+                                            onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+                                            onResizeStop={(e, direction, ref, delta, position) => {
+                                                this.setState({
+                                                width: ref.style.width,
+                                                height: ref.style.height,
+                                                ...position,
+                                                });
+                                            }}
+                                            >
+                                                <div>
+                                                    {this.state.renderText ? this.state.renderText : "Default Logo"}
+                                                </div>
+                                            </Rnd>
                                         </div>
                                     </span>
                                 </div>
