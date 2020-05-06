@@ -245,7 +245,8 @@ class CreateLogoScreen extends Component {
                                                 >
                                                 <img 
                                                     src={(this.state.renderImage ? this.state.renderImage : "https://i.picsum.photos/id/871/200/300.jpg")}
-                                                    alt="new"
+                                                    draggable="false"
+                                                    //alt="new"
                                                     />
                                             </Rnd>
                                         </div>
