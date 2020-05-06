@@ -64,7 +64,6 @@ class CreateLogoScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            imageMessage: "",
             x: 0,
             y: 0,
             imageX: 10,
