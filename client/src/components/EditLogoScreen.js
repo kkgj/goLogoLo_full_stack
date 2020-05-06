@@ -32,7 +32,9 @@ const UPDATE_LOGO = gql`
         $borderWidth: Int!,
         $borderRadius: Int!,
         $padding: Int!,
-        $margin: Int!) {
+        $margin: Int!,
+        $height: Int!,
+        $width: Int!) {
             updateLogo(
                 id: $id,
                 text: $text,
@@ -43,7 +45,9 @@ const UPDATE_LOGO = gql`
                 borderWidth: $borderWidth,
                 borderRadius: $borderRadius,
                 padding: $padding,
-                margin: $margin) {
+                margin: $margin,
+                height: $height,
+                width: $width) {
                     lastUpdate
                 }
         }
@@ -64,18 +68,22 @@ class EditLogoScreen extends Component {
             renderFontSize: "",
             renderPadding: "",
             renderMargin: "",
+            renderHeight: "",
+            renderWidth: "",
             buttonDisabled: false,
             errorMessage: "",
             fontSizeMessage: "",
             borderRadiusMessage: "",
             borderWidthMessage: "",
             paddingMessage: "",
-            marginMessage: ""
+            marginMessage: "",
+            heightMessage: "",
+            widthMessage: ""
         }
     }
 
     render() {
-        let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin;
+        let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width;
         return (
             <Query query={GET_LOGO} variables={{ logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -97,9 +105,9 @@ class EditLogoScreen extends Component {
                                             <form className="col-6" onSubmit={e => {
                                                 e.preventDefault();
                                                 updateLogo({ variables: { id: data.logo._id, text: text.value, color: color.value, fontSize: parseInt(fontSize.value),
-                                                                            backgroundColor: backgroundColor.value, borderColor: borderColor.value,
-                                                                            borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value),
-                                                                            padding: parseInt(padding.value), margin: parseInt(margin.value)  } });
+                                                                            backgroundColor: backgroundColor.value, borderColor: borderColor.value, borderWidth:
+                                                                             parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value), padding: parseInt(padding.value), 
+                                                                             margin: parseInt(margin.value), height: parseInt(height.value), width: parseInt(width.value)  } });
                                                 text.value = "";
                                                 color.value = "";
                                                 fontSize.value = "";
@@ -109,6 +117,8 @@ class EditLogoScreen extends Component {
                                                 borderRadius.value = "";
                                                 padding.value = "";
                                                 margin.value = "";
+                                                height.value = "";
+                                                width.value = "";
                                             }}>
                                                 <div className="form-group col-8">
                                                     <label htmlFor="text">Text:</label>
@@ -186,6 +196,26 @@ class EditLogoScreen extends Component {
                                                     : this.setState({renderMargin: parseInt(margin.value), buttonDisabled: false, marginMessage: ""})} placeholder="Margin" defaultValue={data.logo.margin} />
                                                     <p style={{ color: 'red' }}>
                                                         {this.state.marginMessage}
+                                                    </p>
+                                                </div>
+                                                <div className="form-group col-8">
+                                                    <label htmlFor="height">Height:</label>
+                                                    <input type="number" onInput={()=>{height.value = clamp(height.value, 0, 800);}} className="form-control" name="height" ref={node => {
+                                                        height = node;
+                                                    }} onChange={() => height.value.trim().length < 1 ? this.setState({renderHeight: parseInt(height.value), buttonDisabled: true, heightMessage: "Height cannot be empty"}) 
+                                                    : this.setState({renderHeight: parseInt(height.value), buttonDisabled: false, widthMessage: ""})} placeholder="Height" defaultValue={data.logo.height} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.heightMessage}
+                                                    </p>
+                                                </div>
+                                                <div className="form-group col-8">
+                                                    <label htmlFor="width">Width:</label>
+                                                    <input type="number" onInput={()=>{height.value = clamp(width.value, 0, 1000);}} className="form-control" name="width" ref={node => {
+                                                        width = node;
+                                                    }} onChange={() => width.value.trim().length < 1 ? this.setState({renderWidth: parseInt(height.value), buttonDisabled: true, widthMessage: "Width cannot be empty"}) 
+                                                    : this.setState({renderWidth: parseInt(width.value), buttonDisabled: false, widthMessage: ""})} placeholder="Width" defaultValue={data.logo.width} />
+                                                    <p style={{ color: 'red' }}>
+                                                        {this.state.heightMessage}
                                                     </p>
                                                 </div>
                                                 <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
