@@ -67,7 +67,9 @@ class CreateLogoScreen extends Component {
             x: 0,
             y: 0,
             imageX: 10,
-            imageY: 10
+            imageY: 10,
+            imageHeight: 200,
+            imageWidth: 300
         }
     }
 
@@ -227,9 +229,30 @@ class CreateLogoScreen extends Component {
                                     }}>
                                         <div>
                                             <Rnd
-                                                //size={{ width: 100,  height: 400 }}
+                                                size={{ width: this.state.imageWidth,  height: this.state.imageHeight }}
                                                 position={{ x: this.state.imageX, y: this.state.imageY }}
                                                 onDragStop={(e, d) => { this.setState({ imageX: d.x, imageY: d.y }) }}
+                                                onResizeStop={(e, direction, ref, delta, position) => {
+                                                    this.setState({
+                                                    imageWidth: ref.style.width,
+                                                    imageHeight: ref.style.height,
+                                                    imageX: position.x,
+                                                    imageY: position.y
+                                                    });
+                                                }}
+                                                >
+                                                <img 
+                                                    src={this.state.renderImage}
+                                                    style={{height: "100%", width: "100%"}}
+                                                    draggable="false"
+                                                    />
+                                            </Rnd>
+                                        </div>
+                                        <div>
+                                            <Rnd
+                                                //size={{ width: 100,  height: 400 }}
+                                                position={{ x: this.state.x, y: this.state.y }}
+                                                onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
                                                 onResizeStop={(e, direction, ref, delta, position) => {
                                                     this.setState({
                                                     width: ref.style.width,
@@ -237,26 +260,6 @@ class CreateLogoScreen extends Component {
                                                     ...position,
                                                     });
                                                 }}
-                                                >
-                                                <img 
-                                                    src={this.state.renderImage}
-                                                    draggable="false"
-                                                    //alt="new"
-                                                    />
-                                            </Rnd>
-                                        </div>
-                                        <div>
-                                            <Rnd
-                                            //size={{ width: 100,  height: 400 }}
-                                            position={{ x: this.state.x, y: this.state.y }}
-                                            onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
-                                            onResizeStop={(e, direction, ref, delta, position) => {
-                                                this.setState({
-                                                width: ref.style.width,
-                                                height: ref.style.height,
-                                                ...position,
-                                                });
-                                            }}
                                             >
                                                 <div>
                                                     {this.state.renderText ? this.state.renderText : "Default Logo"}
