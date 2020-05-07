@@ -43,13 +43,14 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: "Default Logo",
-            renderColor: "#1f3eff",
+            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}],
+            // renderText: "Default Logo",
+            // renderColor: "#1f3eff",
             renderBackgroundColor: "#6BFF33",
             renderBorderColor: "#AB33FF",
             renderBorderWidth: "10",
             renderBorderRadius: "0",
-            renderFontSize: "40",
+            //renderFontSize: "40",
             renderPadding: "10",
             renderMargin: "10",
             renderHeight: "130",
@@ -64,17 +65,18 @@ class CreateLogoScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            x: 0,
-            y: 0,
+            // x: 0,
+            // y: 0,
             imageX: 10,
             imageY: 10,
             imageHeight: 200,
-            imageWidth: 300
+            imageWidth: 300,
         }
     }
 
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width, image;
+        let textIndex = 0;
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
@@ -243,28 +245,37 @@ class CreateLogoScreen extends Component {
                                                 >
                                                 <img 
                                                     src={this.state.renderImage}
+                                                    alt=""
                                                     style={{height: "100%", width: "100%"}}
                                                     draggable="false"
                                                     />
                                             </Rnd>
                                         </div>
                                         <div>
-                                            <Rnd
-                                                //size={{ width: 100,  height: 400 }}
-                                                position={{ x: this.state.x, y: this.state.y }}
-                                                onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
-                                                onResizeStop={(e, direction, ref, delta, position) => {
-                                                    this.setState({
-                                                    width: ref.style.width,
-                                                    height: ref.style.height,
-                                                    ...position,
-                                                    });
-                                                }}
-                                            >
-                                                <div>
-                                                    {this.state.renderText ? this.state.renderText : "Default Logo"}
-                                                </div>
-                                            </Rnd>
+                                            {this.state.renderText.map((t, index) => 
+                                                <Rnd
+                                                    key={index}
+                                                    position={{ x: t.x, y: t.y }}
+                                                    onDragStop={(e, d) => { 
+                                                        console.log(text.value)
+                                                        console.log(e.text)
+                                                        text.value = e.text;
+                                                        this.setState({
+                                                            renderText: this.state.renderText.map((e, i) => {
+                                                                if (i == index) {
+                                                                    return {
+                                                                        ...e,
+                                                                        x: d.x, y: d.y
+                                                                    }
+                                                                }
+                                                            })
+                                                        });
+                                                    }}>
+                                                    <div>
+                                                        {t.text ? t.text : "Default Logo"}
+                                                    </div>
+                                                </Rnd>
+                                            )}
                                         </div>
                                     </span>
                                 </div>
