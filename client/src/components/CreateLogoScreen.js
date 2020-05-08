@@ -86,6 +86,12 @@ class CreateLogoScreen extends Component {
         this.setState({renderText: tempText, buttonDisabled: false, fontSizeMessage: ""});
     }
 
+    handleImage = (input) => {
+        let tempImage = this.state.renderImage;
+        tempImage[this.state.imageIndex].image = input.target.value;
+        this.setState({renderImage: tempImage});
+    }
+
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width, image;
         return (
@@ -218,7 +224,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="image">Image:</label>
                                         <input type="text" className="form-control" name="image" ref={node => {
                                             image = node;
-                                        }} onChange={() => this.setState({ renderImage: image.value })} placeholder="Image" defaultValue={this.state.renderImage}/>
+                                        }} onChange={this.handleImage} placeholder="Image" defaultValue={this.state.renderImage[this.state.imageIndex].image}/>
                                     </div>
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
                                 </form>
