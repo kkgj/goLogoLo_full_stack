@@ -44,18 +44,15 @@ class CreateLogoScreen extends Component {
         
         this.state = {
             renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}, { text: "Logo", color: "#52200A", fontSize: "50", x: "20", y: "30"}],
-            // renderText: "Default Logo",
-            // renderColor: "#1f3eff",
             renderBackgroundColor: "#6BFF33",
             renderBorderColor: "#AB33FF",
             renderBorderWidth: "10",
             renderBorderRadius: "0",
-            //renderFontSize: "40",
             renderPadding: "10",
             renderMargin: "10",
             renderHeight: "130",
             renderWidth: "330",
-            renderImage: "https://i.picsum.photos/id/871/200/300.jpg",
+            renderImage: [{image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 200, imageWidth: 300, imageX: 10, imageY: 10}],
             buttonDisabled: false,
             errorMessage: "",
             fontSizeMessage: "",
@@ -65,12 +62,6 @@ class CreateLogoScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            // x: 0,
-            // y: 0,
-            imageX: 10,
-            imageY: 10,
-            imageHeight: 200,
-            imageWidth: 300,
             textIndex: 0
         }
     }
