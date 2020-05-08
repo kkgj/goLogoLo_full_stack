@@ -43,7 +43,7 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}, { text: "Logo", color: "#1f3ef3", fontSize: "50", x: "0", y: "0"}],
+            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}, { text: "Logo", color: "#52200A", fontSize: "50", x: "20", y: "30"}],
             // renderText: "Default Logo",
             // renderColor: "#1f3eff",
             renderBackgroundColor: "#6BFF33",
@@ -117,7 +117,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="text">Text:</label>
                                         <input type="text" className="form-control" name="text" ref={node => {
                                             text = node;
-                                        }} onChange={this.handleText} placeholder="Text" defaultValue={"Default"}/>
+                                        }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
                                         </p>
@@ -126,7 +126,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" ref={node => {
                                             color = node;
-                                        }}onChange={() => this.setState({renderColor: this.state.renderText})} placeholder="Color" defaultValue={this.state.renderColor}/>
+                                        }}onChange={() => this.setState({renderColor: this.state.renderText})} placeholder="Color" defaultValue={this.state.renderText[this.state.textIndex].color}/>
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="backgroundColor">Background Color:</label>
@@ -221,7 +221,7 @@ class CreateLogoScreen extends Component {
                                 <div className="col-6">
                                     <span style={{
                                         display: "inline-block",
-                                        color: this.state.renderColor ? this.state.renderColor : "#1f3eff",
+                                        //color: this.state.renderColor ? this.state.renderColor : "#1f3eff",
                                         backgroundColor: this.state.renderBackgroundColor ? this.state.renderBackgroundColor : "#6BFF33",
                                         borderColor: this.state.renderBorderColor ? this.state.renderBorderColor : "#AB33FF",
                                         borderStyle: "solid",
@@ -272,7 +272,11 @@ class CreateLogoScreen extends Component {
                                                             textIndex: index
                                                         });
                                                     }}>
-                                                    <div>
+                                                    <div 
+                                                        style={{
+                                                            color: t.color, 
+                                                            fontSize: t.fontSize + "pt",
+                                                            }}>
                                                         {t.text ? t.text : "Default Logo"}
                                                     </div>
                                                 </Rnd>
