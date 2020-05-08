@@ -81,6 +81,18 @@ class CreateLogoScreen extends Component {
         this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
     }
 
+    handleColor = (input) => {
+        let tempText = this.state.renderText;
+        tempText[this.state.textIndex].color = input.target.value;
+        this.setState({renderText: tempText});
+    }
+
+    handleFontSize = (input) => {
+        let tempText = this.state.renderText;
+        tempText[this.state.textIndex].fontSize = input.target.value;
+        this.setState({renderText: tempText, buttonDisabled: false, fontSizeMessage: ""});
+    }
+
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width, image;
         return (
@@ -126,7 +138,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" ref={node => {
                                             color = node;
-                                        }}onChange={() => this.setState({renderColor: this.state.renderText})} placeholder="Color" defaultValue={this.state.renderText[this.state.textIndex].color}/>
+                                        }}onChange={this.handleColor} placeholder="Color" defaultValue={this.state.renderText[this.state.textIndex].color}/>
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="backgroundColor">Background Color:</label>
@@ -144,8 +156,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="fontSize">Font Size:</label>
                                         <input type="text" onInput={()=>{fontSize.value = clamp(fontSize.value, 0, 144);}} className="form-control" name="fontSize" ref={node => {
                                             fontSize = node;
-                                        }} onChange={() => fontSize.value.trim().length < 1 ? this.setState({ renderFontSize: fontSize.value,buttonDisabled: true, fontSizeMessage: "Font Size cannot be empty" }) 
-                                        : this.setState({renderFontSize: fontSize.value, buttonDisabled: false, fontSizeMessage: ""})} placeholder="Font Size" defaultValue={this.state.renderFontSize}/>
+                                        }} onChange={this.handleFontSize} placeholder="Font Size" value={this.state.renderText[this.state.textIndex].fontSize}/>
                                         <p style={{ color: 'red' }}>
                                             {this.state.fontSizeMessage}
                                         </p>
@@ -259,8 +270,14 @@ class CreateLogoScreen extends Component {
                                         <div>
                                             {this.state.renderText.map((t, index) => 
                                                 <Rnd
+                                                    style={this.state.textIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
+                                                    onDragStart={(e, d) => {
+                                                        this.setState({
+                                                            textIndex: index
+                                                        })
+                                                    }}
                                                     onDragStop={(e, d) => { 
                                                         text.value = t.text;
                                                         color.value = t.color;
