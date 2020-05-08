@@ -43,7 +43,7 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}],
+            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}, { text: "Logo", color: "#1f3ef3", fontSize: "50", x: "0", y: "0"}],
             // renderText: "Default Logo",
             // renderColor: "#1f3eff",
             renderBackgroundColor: "#6BFF33",
@@ -71,12 +71,18 @@ class CreateLogoScreen extends Component {
             imageY: 10,
             imageHeight: 200,
             imageWidth: 300,
+            textIndex: 0
         }
+    }
+
+    handleText = (input) => {
+        let tempText = this.state.renderText;
+        tempText[this.state.textIndex].text = input.target.value;
+        this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
     }
 
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width, image;
-        let textIndex = 0;
         return (
             <Mutation mutation={ADD_LOGO} onCompleted={() => this.props.history.push('/')}>
                 {(addLogo, { loading, error }) => (
@@ -111,8 +117,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="text">Text:</label>
                                         <input type="text" className="form-control" name="text" ref={node => {
                                             text = node;
-                                        }} onChange={() => text.value.trim().length < 1 ? this.setState({ renderText: text.value, buttonDisabled: true, errorMessage: "Text cannot be empty" }) 
-                                        : this.setState({renderText: text.value, buttonDisabled: false, errorMessage: ""})} placeholder="Text" defaultValue={this.state.renderText}/>
+                                        }} onChange={this.handleText} placeholder="Text" defaultValue={"Default"}/>
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
                                         </p>
@@ -121,7 +126,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" ref={node => {
                                             color = node;
-                                        }}onChange={() => this.setState({renderColor: color.value})} placeholder="Color" defaultValue={this.state.renderColor}/>
+                                        }}onChange={() => this.setState({renderColor: this.state.renderText})} placeholder="Color" defaultValue={this.state.renderColor}/>
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="backgroundColor">Background Color:</label>
@@ -257,18 +262,14 @@ class CreateLogoScreen extends Component {
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStop={(e, d) => { 
-                                                        console.log(text.value)
-                                                        console.log(e.text)
-                                                        text.value = e.text;
-                                                        this.setState({
-                                                            renderText: this.state.renderText.map((e, i) => {
-                                                                if (i == index) {
-                                                                    return {
-                                                                        ...e,
-                                                                        x: d.x, y: d.y
-                                                                    }
-                                                                }
-                                                            })
+                                                        text.value = t.text;
+                                                        color.value = t.color;
+                                                        let tempText = this.state.renderText;
+                                                        tempText[index].x = d.x;
+                                                        tempText[index].y = d.y;
+                                                        this.setState({  
+                                                            renderText: tempText,
+                                                            textIndex: index
                                                         });
                                                     }}>
                                                     <div>
