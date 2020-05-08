@@ -62,7 +62,9 @@ class CreateLogoScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            textIndex: 0
+            textIndex: "0",
+            imageIndex: "0",
+            index: "0"
         }
     }
 
@@ -237,47 +239,72 @@ class CreateLogoScreen extends Component {
                                         whiteSpace: "pre"
                                     }}>
                                         <div>
-                                            <Rnd
-                                                size={{ width: this.state.imageWidth,  height: this.state.imageHeight }}
-                                                position={{ x: this.state.imageX, y: this.state.imageY }}
-                                                onDragStop={(e, d) => { this.setState({ imageX: d.x, imageY: d.y }) }}
-                                                onResizeStop={(e, direction, ref, delta, position) => {
-                                                    this.setState({
-                                                    imageWidth: ref.style.width,
-                                                    imageHeight: ref.style.height,
-                                                    imageX: position.x,
-                                                    imageY: position.y
-                                                    });
-                                                }}
-                                                >
-                                                <img 
-                                                    src={this.state.renderImage}
-                                                    alt=""
-                                                    style={{height: "100%", width: "100%"}}
-                                                    draggable="false"
-                                                    />
-                                            </Rnd>
+                                            {this.state.renderImage.map((element, index) => 
+                                                <Rnd
+                                                    key={index}
+                                                    style={this.state.index == "1" && this.state.imageIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
+                                                    size={{ width: element.imageWidth,  height: element.imageHeight }}
+                                                    position={{ x: element.imageX, y: element.imageY }}
+                                                    onDragStart={(e, d) => {
+                                                        this.setState({
+                                                            imageIndex: index,
+                                                            index: "1"
+                                                        })
+                                                    }}
+                                                    onResizeStart={(e, direction, ref, delta, position) => {
+                                                        this.setState({
+                                                            imageIndex: index,
+                                                        })
+                                                    }}
+                                                    onDragStop={(e, d) => { 
+                                                        let tempImage = this.state.renderImage;
+                                                        tempImage[index].imageX = d.x;
+                                                        tempImage[index].imageY = d.y;
+                                                        this.setState({ renderImage: tempImage }) 
+                                                    }}
+                                                    onResizeStop={(e, direction, ref, delta, position) => {
+                                                        let tempImage = this.state.renderImage;
+                                                        tempImage[index].imageX = position.x;
+                                                        tempImage[index].imageY = position.y;
+                                                        tempImage[index].imageHeight =  ref.style.height;
+                                                        tempImage[index].imageWidth = ref.style.width;
+                                                        this.setState({  
+                                                            renderImage: tempImage,
+                                                            imageIndex: index,
+                                                        });
+                                                    }}
+                                                    >
+                                                    <img 
+                                                        src={element.image}
+                                                        alt=""
+                                                        style={{height: "100%", width: "100%"}}
+                                                        draggable="false"
+                                                        />
+                                                </Rnd>
+                                            )}
                                         </div>
                                         <div>
                                             {this.state.renderText.map((t, index) => 
                                                 <Rnd
-                                                    style={this.state.textIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
+                                                    style={this.state.index == "0" && this.state.textIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStart={(e, d) => {
+                                                        fontSize.value = t.fontSize;
+                                                        text.value = t.text;
+                                                        color.value = t.color;
                                                         this.setState({
-                                                            textIndex: index
+                                                            textIndex: index,
+                                                            index: "0"
                                                         })
                                                     }}
                                                     onDragStop={(e, d) => { 
-                                                        text.value = t.text;
-                                                        color.value = t.color;
                                                         let tempText = this.state.renderText;
                                                         tempText[index].x = d.x;
                                                         tempText[index].y = d.y;
                                                         this.setState({  
                                                             renderText: tempText,
-                                                            textIndex: index
+                                                            textIndex: index,
                                                         });
                                                     }}>
                                                     <div 
