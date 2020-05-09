@@ -50,9 +50,9 @@ class CreateLogoScreen extends Component {
             renderBorderRadius: "0",
             renderPadding: "10",
             renderMargin: "10",
-            renderHeight: "130",
-            renderWidth: "330",
-            renderImage: [{image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 200, imageWidth: 300, imageX: 10, imageY: 10}],
+            renderHeight: "630",
+            renderWidth: "530",
+            renderImage: [{image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 300, imageWidth: 200, imageX: 10, imageY: 10}],
             buttonDisabled: false,
             errorMessage: "",
             fontSizeMessage: "",
@@ -64,7 +64,6 @@ class CreateLogoScreen extends Component {
             widthMessage: "",
             textIndex: "0",
             imageIndex: "0",
-            index: "0"
         }
     }
 
@@ -229,37 +228,38 @@ class CreateLogoScreen extends Component {
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
                                 </form>
                                 <div className="col-6">
-                                    <span style={{
-                                        display: "inline-block",
-                                        //color: this.state.renderColor ? this.state.renderColor : "#1f3eff",
-                                        backgroundColor: this.state.renderBackgroundColor ? this.state.renderBackgroundColor : "#6BFF33",
-                                        borderColor: this.state.renderBorderColor ? this.state.renderBorderColor : "#AB33FF",
-                                        borderStyle: "solid",
-                                        fontSize: (this.state.renderFontSize ? this.state.renderFontSize : 40) + "pt",
-                                        borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 10) + "px",
-                                        borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 0) + "px",
-                                        padding: (this.state.renderPadding ? this.state.renderPadding : 10) + "px",
-                                        margin: (this.state.renderMargin ? this.state.renderMargin : 10) + "px",
-                                        height: (this.state.renderHeight ? this.state.renderHeight : 130) + "px",
-                                        width: (this.state.renderWidth ? this.state.renderWidth : 330) + "px",
-                                        whiteSpace: "pre"
+                                    <span className="hello"
+                                        style={{
+                                            display: "inline-block",
+                                            //color: this.state.renderColor ? this.state.renderColor : "#1f3eff",
+                                            backgroundColor: this.state.renderBackgroundColor ? this.state.renderBackgroundColor : "#6BFF33",
+                                            borderColor: this.state.renderBorderColor ? this.state.renderBorderColor : "#AB33FF",
+                                            borderStyle: "solid",
+                                            fontSize: (this.state.renderFontSize ? this.state.renderFontSize : 40) + "pt",
+                                            borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 10) + "px",
+                                            borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 0) + "px",
+                                            padding: (this.state.renderPadding ? this.state.renderPadding : 10) + "px",
+                                            margin: (this.state.renderMargin ? this.state.renderMargin : 10) + "px",
+                                            height: (this.state.renderHeight ? this.state.renderHeight : 630) + "px",
+                                            width: (this.state.renderWidth ? this.state.renderWidth : 530) + "px",
+                                            whiteSpace: "pre"
                                     }}>
                                         <div>
                                             {this.state.renderImage.map((element, index) => 
                                                 <Rnd
+                                                    bounds=".hello"
                                                     key={index}
-                                                    style={this.state.index == "1" && this.state.imageIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
+                                                    style={this.state.imageIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
                                                     size={{ width: element.imageWidth,  height: element.imageHeight }}
                                                     position={{ x: element.imageX, y: element.imageY }}
                                                     onDragStart={(e, d) => {
                                                         this.setState({
-                                                            imageIndex: index,
-                                                            index: "1"
+                                                            imageIndex: index
                                                         })
                                                     }}
                                                     onResizeStart={(e, direction, ref, delta, position) => {
                                                         this.setState({
-                                                            imageIndex: index,
+                                                            imageIndex: index
                                                         })
                                                     }}
                                                     onDragStop={(e, d) => { 
@@ -276,7 +276,7 @@ class CreateLogoScreen extends Component {
                                                         tempImage[index].imageWidth = ref.style.width;
                                                         this.setState({  
                                                             renderImage: tempImage,
-                                                            imageIndex: index,
+                                                            imageIndex: index
                                                         });
                                                     }}
                                                     >
@@ -292,7 +292,8 @@ class CreateLogoScreen extends Component {
                                         <div>
                                             {this.state.renderText.map((t, index) => 
                                                 <Rnd
-                                                    style={this.state.index == "0" && this.state.textIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
+                                                    bounds=".hello"
+                                                    style={this.state.textIndex == index ? {zIndex:"2"} : {zIndex:"1"}}
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStart={(e, d) => {
@@ -300,8 +301,7 @@ class CreateLogoScreen extends Component {
                                                         text.value = t.text;
                                                         color.value = t.color;
                                                         this.setState({
-                                                            textIndex: index,
-                                                            index: "0"
+                                                            textIndex: index
                                                         })
                                                     }}
                                                     onDragStop={(e, d) => { 
@@ -310,7 +310,7 @@ class CreateLogoScreen extends Component {
                                                         tempText[index].y = d.y;
                                                         this.setState({  
                                                             renderText: tempText,
-                                                            textIndex: index,
+                                                            textIndex: index
                                                         });
                                                     }}>
                                                     <div 
