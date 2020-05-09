@@ -125,9 +125,13 @@ class CreateLogoScreen extends Component {
                                 }}>
                                     <div className="form-group col-8">
                                         <label htmlFor="text">Text:</label>
-                                        <input type="text" className="form-control" name="text" ref={node => {
-                                            text = node;
-                                        }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
+                                            <input type="text" className="form-control" name="text" ref={node => {
+                                                text = node;
+                                            }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" class="btn btn-secondary">+</button>
+                                                <button type="button" class="btn btn-secondary">-</button>
+                                            </div> 
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
                                         </p>
@@ -224,6 +228,10 @@ class CreateLogoScreen extends Component {
                                         <input type="text" className="form-control" name="image" ref={node => {
                                             image = node;
                                         }} onChange={this.handleImage} placeholder="Image" defaultValue={this.state.renderImage[this.state.imageIndex].image}/>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-secondary">+</button>
+                                            <button type="button" class="btn btn-secondary">-</button>
+                                        </div> 
                                     </div>
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
                                 </form>
