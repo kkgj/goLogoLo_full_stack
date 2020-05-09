@@ -244,7 +244,7 @@ class CreateLogoScreen extends Component {
                                             width: (this.state.renderWidth ? this.state.renderWidth : 530) + "px",
                                             whiteSpace: "pre"
                                     }}>
-                                        <div>
+                                        <div style={{position: "absolute"}}>
                                             {this.state.renderImage.map((element, index) => 
                                                 <Rnd
                                                     bounds=".hello"
@@ -289,7 +289,7 @@ class CreateLogoScreen extends Component {
                                                 </Rnd>
                                             )}
                                         </div>
-                                        <div>
+                                        <div style={{position: "absolute"}}>
                                             {this.state.renderText.map((t, index) => 
                                                 <Rnd
                                                     bounds=".hello"
