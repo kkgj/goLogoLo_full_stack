@@ -73,6 +73,15 @@ class CreateLogoScreen extends Component {
         this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
     }
 
+    handleDeleteText = () => {
+        if (this.state.renderText.length === 1) {
+            this.setState({errorMessage: "Text cannot be empty!", buttonDisabled: true});
+        } else {
+            let tempText = this.state.renderText;
+            this.setState({errorMessage: "", buttonDisabled: false});
+        }
+    }
+
     handleColor = (input) => {
         let tempText = this.state.renderText;
         tempText[this.state.textIndex].color = input.target.value;
@@ -128,9 +137,9 @@ class CreateLogoScreen extends Component {
                                             <input type="text" className="form-control" name="text" ref={node => {
                                                 text = node;
                                             }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-secondary">+</button>
-                                                <button type="button" class="btn btn-secondary" onChange={}>-</button>
+                                            <div className="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" className="btn btn-secondary">+</button>
+                                                <button type="button" className="btn btn-secondary" onChange={this.handleDeleteText}>-</button>
                                             </div> 
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
@@ -228,9 +237,9 @@ class CreateLogoScreen extends Component {
                                         <input type="text" className="form-control" name="image" ref={node => {
                                             image = node;
                                         }} onChange={this.handleImage} placeholder="Image" defaultValue={this.state.renderImage[this.state.imageIndex].image}/>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" class="btn btn-secondary">+</button>
-                                            <button type="button" class="btn btn-secondary">-</button>
+                                        <div className="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" className="btn btn-secondary">+</button>
+                                            <button type="button" className="btn btn-secondary">-</button>
                                         </div> 
                                     </div>
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
@@ -257,7 +266,7 @@ class CreateLogoScreen extends Component {
                                                 <Rnd
                                                     bounds=".hello"
                                                     key={index}
-                                                    style={this.state.imageIndex == index ? {zIndex:"1"} : {zIndex:"0"}}
+                                                    style={this.state.imageIndex === index ? {zIndex:"1"} : {zIndex:"0"}}
                                                     size={{ width: element.imageWidth,  height: element.imageHeight }}
                                                     position={{ x: element.imageX, y: element.imageY }}
                                                     onDragStart={(e, d) => {
@@ -301,7 +310,7 @@ class CreateLogoScreen extends Component {
                                             {this.state.renderText.map((t, index) => 
                                                 <Rnd
                                                     bounds=".hello"
-                                                    style={this.state.textIndex == index ? {zIndex:"2"} : {zIndex:"1"}}
+                                                    style={this.state.textIndex === index ? {zIndex:"2"} : {zIndex:"1"}}
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStart={(e, d) => {
