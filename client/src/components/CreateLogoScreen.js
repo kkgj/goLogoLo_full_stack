@@ -102,6 +102,20 @@ class CreateLogoScreen extends Component {
         this.setState({renderImage: tempImage});
     }
 
+    handleAdd = () => {
+        let tempText = this.state.renderText;
+        tempText.push({ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "5", y: "5" });
+        this.setState({ renderText: tempText });
+    } 
+
+    handleDelete = () => {
+        if (this.state.renderText.length > 1) {
+            let tempText = this.state.renderText;
+            tempText.splice(this.state.textIndex, 1);
+            this.setState({textIndex: "0", renderText: tempText});
+        }
+    }
+
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderWidth, borderRadius, padding, margin, height, width, image;
         return (
@@ -139,12 +153,11 @@ class CreateLogoScreen extends Component {
                                             <input type="text" className="form-control" name="text" ref={node => {
                                                 text = node;
                                             }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
-                                            <div className="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" className="btn btn-secondary">+</button>
-                                                <PopModal 
-                                                    message={true}
-                                                    flag={this.state.renderText.length===1}/>
-                                            </div> 
+                                            <PopModal 
+                                                handleDelete={this.handleDelete}
+                                                handleAdd={this.handleAdd}
+                                                message={true}
+                                                flag={this.state.renderText.length===1}/>
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
                                         </p>
