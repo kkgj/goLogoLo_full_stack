@@ -4,6 +4,7 @@ import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 import { clamp } from '../utils/utlity';
 import { Rnd } from 'react-rnd';
+import PopModal from './PopModal'
 
 const ADD_LOGO = gql`
     mutation AddLogo(
@@ -63,7 +64,7 @@ class CreateLogoScreen extends Component {
             heightMessage: "",
             widthMessage: "",
             textIndex: "0",
-            imageIndex: "0",
+            imageIndex: "0"
         }
     }
 
@@ -73,14 +74,15 @@ class CreateLogoScreen extends Component {
         this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
     }
 
-    handleDeleteText = () => {
-        if (this.state.renderText.length === 1) {
-            this.setState({errorMessage: "Text cannot be empty!", buttonDisabled: true});
-        } else {
-            let tempText = this.state.renderText;
-            this.setState({errorMessage: "", buttonDisabled: false});
-        }
-    }
+    // handleDeleteText = () => {
+    //     if (this.state.renderText.length === 1) {
+    //         this.setState({deleteText: "You need to have at least one text!"});
+    //     } else {
+    //         let tempText = this.state.renderText;
+    //         tempText.splice(this.state.textIndex, 1);
+    //         this.setState({renderText: tempText, deleteText: ""});
+    //     }
+    // }
 
     handleColor = (input) => {
         let tempText = this.state.renderText;
@@ -139,7 +141,9 @@ class CreateLogoScreen extends Component {
                                             }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
                                             <div className="btn-group" role="group" aria-label="Basic example">
                                                 <button type="button" className="btn btn-secondary">+</button>
-                                                <button type="button" className="btn btn-secondary" onChange={this.handleDeleteText}>-</button>
+                                                <PopModal 
+                                                    message={true}
+                                                    flag={this.state.renderText.length===1}/>
                                             </div> 
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
