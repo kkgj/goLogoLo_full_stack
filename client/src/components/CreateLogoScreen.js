@@ -69,9 +69,15 @@ class CreateLogoScreen extends Component {
     }
 
     handleText = (input) => {
-        let tempText = this.state.renderText;
-        tempText[this.state.textIndex].text = input.target.value;
-        this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
+        if (input.target.value.trim().length < 1) {
+            let tempText = this.state.renderText;
+            tempText[this.state.textIndex].text = "";
+            this.setState({renderText: tempText, buttonDisabled: true, errorMessage: "Text cannot be empty!"});
+        } else {
+            let tempText = this.state.renderText;
+            tempText[this.state.textIndex].text = input.target.value;
+            this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
+        }
     }
 
     // handleDeleteText = () => {
@@ -105,14 +111,14 @@ class CreateLogoScreen extends Component {
     handleAdd = () => {
         let tempText = this.state.renderText;
         tempText.push({ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "5", y: "5" });
-        this.setState({ renderText: tempText });
+        this.setState({ renderText: tempText, buttonDisabled: false, errorMessage: "" });
     } 
 
     handleDelete = () => {
         if (this.state.renderText.length > 1) {
             let tempText = this.state.renderText;
             tempText.splice(this.state.textIndex, 1);
-            this.setState({textIndex: "0", renderText: tempText});
+            this.setState({textIndex: "0", renderText: tempText, buttonDisabled: false, errorMessage: ""});
         }
     }
 
@@ -331,11 +337,18 @@ class CreateLogoScreen extends Component {
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStart={(e, d) => {
+                                                        if (t.text === "") {
+                                                            let tempText = this.state.renderText;
+                                                            t.text = "Default Logo";
+                                                            tempText[index] = t;
+                                                            this.setState({ renderText: tempText });
+                                                        }
                                                         fontSize.value = t.fontSize;
                                                         text.value = t.text;
                                                         color.value = t.color;
                                                         this.setState({
-                                                            textIndex: index
+                                                            textIndex: index,
+                                                            buttonDisabled: false, errorMessage: ""
                                                         })
                                                     }}
                                                     onDragStop={(e, d) => { 
