@@ -43,7 +43,7 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}, { text: "Logo", color: "#52200A", fontSize: "50", x: "20", y: "30"}],
+            renderText: [{text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}],
             renderBackgroundColor: "#6BFF33",
             renderBorderColor: "#AB33FF",
             renderBorderWidth: "10",
@@ -130,7 +130,7 @@ class CreateLogoScreen extends Component {
                                             }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <button type="button" class="btn btn-secondary">+</button>
-                                                <button type="button" class="btn btn-secondary">-</button>
+                                                <button type="button" class="btn btn-secondary" onChange={}>-</button>
                                             </div> 
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
