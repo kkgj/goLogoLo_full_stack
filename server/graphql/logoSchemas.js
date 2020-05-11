@@ -3,11 +3,102 @@ var GraphQLObjectType = require('graphql').GraphQLObjectType;
 var GraphQLList = require('graphql').GraphQLList;
 var GraphQLObjectType = require('graphql').GraphQLObjectType;
 var GraphQLNonNull = require('graphql').GraphQLNonNull;
+var GraphQLInputObjectType = require('graphql').GraphQLInputObjectType;
 var GraphQLID = require('graphql').GraphQLID;
 var GraphQLString = require('graphql').GraphQLString;
 var GraphQLInt = require('graphql').GraphQLInt;
 var GraphQLDate = require('graphql-date');
 var LogoModel = require('../models/Logo');
+
+var textArrayObject = new GraphQLObjectType({
+    name: 'textArrayObject',
+    fields: function () {
+        return {
+            text: {
+                type: GraphQLString
+            },
+            color: {
+                type: GraphQLString
+            },
+            fontSize:{
+                type: GraphQLInt
+            },
+            x:{
+                type: GraphQLInt
+            },
+            y:{
+                type: GraphQLInt
+            }
+        }
+    }
+})
+var textArrayInput = new GraphQLInputObjectType({
+    name: 'textArrayInput',
+    fields: function () {
+        return {
+            text: {
+                type: GraphQLString
+            },
+            color: {
+                type: GraphQLString
+            },
+            fontSize:{
+                type: GraphQLInt
+            },
+            x: {
+                type: GraphQLInt
+            },
+            y: {
+                type: GraphQLInt
+            }
+        }
+    }
+})
+
+var imageArrayObj = new GraphQLObjectType({
+    name: 'imageArrayObj',
+    fields: function () {
+        return {
+            image: {
+                type: GraphQLString
+            },
+            imageHeight: {
+                type: GraphQLInt
+            },
+            imageWidth:{
+                type: GraphQLInt
+            },
+            imageX:{
+                type: GraphQLInt
+            },
+            imageY:{
+                type: GraphQLInt
+            }
+        }
+    }
+})
+var imageArrayInput = new GraphQLInputObjectType({
+    name: 'imageArrayInput',
+    fields: function () {
+        return {
+            image: {
+                type: GraphQLString
+            },
+            imageHeight: {
+                type: GraphQLInt
+            },
+            imageWidth:{
+                type: GraphQLInt
+            },
+            imageX:{
+                type: GraphQLInt
+            },
+            imageY:{
+                type: GraphQLInt
+            }
+        }
+    }
+})
 
 var logoType = new GraphQLObjectType({
     name: 'logo',
@@ -16,14 +107,8 @@ var logoType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
-            text: {
-                type: GraphQLString
-            },
-            color: {
-                type: GraphQLString
-            },
-            fontSize: {
-                type: GraphQLInt
+            textArray: {
+                type: GraphQLList(textArrayObject)
             },
             backgroundColor: {
                 type: GraphQLString
@@ -49,8 +134,8 @@ var logoType = new GraphQLObjectType({
             width: {
                 type: GraphQLInt
             },
-            image: {
-                type: GraphQLString
+            imageArray: {
+                type: GraphQLList(imageArrayObj)
             },
             lastUpdate: {
                 type: GraphQLDate
@@ -132,14 +217,15 @@ var mutation = new GraphQLObjectType({
             addLogo: {
                 type: logoType,
                 args: {
-                    text: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    color: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    fontSize: {
-                        type: new GraphQLNonNull(GraphQLInt)
+                    textArray: {
+                        type: new GraphQLNonNull(new GraphQLList(textArrayInput)),
+                        args: {
+                            text: {type: new GraphQLNonNull(GraphQLString)},
+                            color: {type: new GraphQLNonNull(GraphQLString)},
+                            fontSize: {type: new GraphQLNonNull(GraphQLInt)},
+                            x: {type: new GraphQLNonNull(GraphQLInt)},
+                            y: {type: new GraphQLNonNull(GraphQLInt)},
+                        }
                     },
                     backgroundColor: {
                         type: new GraphQLNonNull(GraphQLString)
@@ -165,9 +251,16 @@ var mutation = new GraphQLObjectType({
                     width: {
                         type: new GraphQLNonNull(GraphQLInt)
                     },
-                    image: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    }
+                    imageArray: {
+                        type: new GraphQLNonNull(new GraphQLList(imageArrayInput)),
+                        args: {
+                            image: {type: new GraphQLNonNull(GraphQLString)},
+                            imageHeight: {type: new GraphQLNonNull(GraphQLInt)},
+                            imageWidth: {type: new GraphQLNonNull(GraphQLInt)},
+                            imageX: {type: new GraphQLNonNull(GraphQLInt)},
+                            imageY: {type: new GraphQLNonNull(GraphQLInt)},
+                        }
+                    },
                 },
                 resolve: function (root, params) {
                     const logoModel = new LogoModel(params);
@@ -185,14 +278,15 @@ var mutation = new GraphQLObjectType({
                         name: 'id',
                         type: new GraphQLNonNull(GraphQLString)
                     },
-                    text: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    color: {
-                        type: new GraphQLNonNull(GraphQLString)
-                    },
-                    fontSize: {
-                        type: new GraphQLNonNull(GraphQLInt)
+                    textArray: {
+                        type: new GraphQLNonNull(new GraphQLList(textArrayInput)),
+                        args: {
+                            text: {type: new GraphQLNonNull(GraphQLString)},
+                            color: {type: new GraphQLNonNull(GraphQLString)},
+                            fontSize: {type: new GraphQLNonNull(GraphQLInt)},
+                            x: {type: new GraphQLNonNull(GraphQLInt)},
+                            y: {type: new GraphQLNonNull(GraphQLInt)},
+                        }
                     },
                     backgroundColor: {
                         type: new GraphQLNonNull(GraphQLString)
@@ -218,17 +312,24 @@ var mutation = new GraphQLObjectType({
                     width: {
                         type: new GraphQLNonNull(GraphQLInt)
                     },
-                    image: {
-                        type: new GraphQLNonNull(GraphQLString)
+                    imageArray: {
+                        type: new GraphQLNonNull(new GraphQLList(imageArrayInput)),
+                        args: {
+                            image: {type: new GraphQLNonNull(GraphQLString)},
+                            imageHeight: {type: new GraphQLNonNull(GraphQLInt)},
+                            imageWidth: {type: new GraphQLNonNull(GraphQLInt)},
+                            imageX: {type: new GraphQLNonNull(GraphQLInt)},
+                            imageY: {type: new GraphQLNonNull(GraphQLInt)},
+                        }
                     }
                 },
                 resolve(root, params) {
                     return LogoModel.findByIdAndUpdate(params.id,
-                        { text: params.text, color: params.color, fontSize: params.fontSize,
-                            backgroundColor : params.backgroundColor, borderColor : params.borderColor,
-                            borderWidth: params.borderWidth, borderRadius: params.borderRadius, padding: 
-                            params.padding, margin: params.margin, height: params.height, width: params.width, 
-                            image: params.image, lastUpdate: new Date() }, function (err) {
+                        { textArray: params.textArray, backgroundColor : params.backgroundColor, 
+                            borderColor : params.borderColor, borderWidth: params.borderWidth,
+                            borderRadius: params.borderRadius, padding: params.padding, 
+                            margin: params.margin, height: params.height, width: params.width, 
+                            imageArray: params.imageArray, lastUpdate: new Date() }, function (err) {
                         if (err) return next(err);
                     });
                 }

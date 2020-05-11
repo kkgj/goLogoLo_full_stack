@@ -8,9 +8,7 @@ import PopModal from './PopModal'
 
 const ADD_LOGO = gql`
     mutation AddLogo(
-        $text: String!,
-        $color: String!,
-        $fontSize: Int!,
+        $textArray: [textArrayInput]!,
         $backgroundColor: String!,
         $borderColor: String!,
         $borderWidth: Int!,
@@ -19,11 +17,9 @@ const ADD_LOGO = gql`
         $margin: Int!,
         $height: Int!,
         $width: Int!,
-        $image: String!) {
+        $imageArray: [imageArrayInput]!) {
         addLogo(
-            text: $text,
-            color: $color,
-            fontSize: $fontSize,
+            textArray: $textArray,
             backgroundColor: $backgroundColor,
             borderColor: $borderColor,
             borderWidth: $borderWidth,
@@ -32,7 +28,7 @@ const ADD_LOGO = gql`
             margin: $margin,
             height: $height,
             width: $width,
-            image: $image) {
+            imageArray: $imageArray) {
             _id
         }
     }
@@ -44,7 +40,7 @@ class CreateLogoScreen extends Component {
         super(props)
         
         this.state = {
-            renderText: [{text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "0", y: "0"}],
+            renderText: [{text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 0, y: 0}],
             renderBackgroundColor: "#6BFF33",
             renderBorderColor: "#AB33FF",
             renderBorderWidth: "10",
@@ -138,9 +134,10 @@ class CreateLogoScreen extends Component {
                             <div className="panel-body row">
                                 <form className="col-6" onSubmit={e => {
                                     e.preventDefault();
-                                    addLogo({ variables: { text: text.value, color: color.value, fontSize: parseInt(fontSize.value), backgroundColor: backgroundColor.value, 
-                                        borderColor: borderColor.value, borderWidth: parseInt(borderWidth.value), borderRadius: parseInt(borderRadius.value), padding: 
-                                        parseInt(padding.value), margin: parseInt(margin.value), height: parseInt(height.value), width: parseInt(width.value), image: image.value }});
+                                    addLogo({ variables: { textArray: this.state.renderText, backgroundColor: backgroundColor.value, 
+                                        borderColor: borderColor.value, borderWidth: parseInt(borderWidth.value), borderRadius: 
+                                        parseInt(borderRadius.value), padding: parseInt(padding.value), margin: parseInt(margin.value),
+                                        height: parseInt(height.value), width: parseInt(width.value), imageArray: this.state.renderImage }});
                                     text.value = "";
                                     color.value = "";
                                     fontSize.value = "";
