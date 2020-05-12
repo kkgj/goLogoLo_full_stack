@@ -59,8 +59,8 @@ class CreateLogoScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            textIndex: "0",
-            imageIndex: "0"
+            textIndex: 0,
+            imageIndex: 0,
         }
     }
 
@@ -106,15 +106,15 @@ class CreateLogoScreen extends Component {
 
     handleAdd = () => {
         let tempText = this.state.renderText;
-        tempText.push({ text: "Default Logo", color: "#1f3eff", fontSize: "40", x: "5", y: "5" });
-        this.setState({ renderText: tempText, buttonDisabled: false, errorMessage: "" });
+        tempText.unshift({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
+        this.setState({ renderText: tempText, textIndex: 0, buttonDisabled: false, errorMessage: "" });
     } 
 
     handleDelete = () => {
         if (this.state.renderText.length > 1) {
             let tempText = this.state.renderText;
             tempText.splice(this.state.textIndex, 1);
-            this.setState({textIndex: "0", renderText: tempText, buttonDisabled: false, errorMessage: ""});
+            this.setState({textIndex: 0, renderText: tempText, buttonDisabled: false, errorMessage: ""});
         }
     }
 
@@ -155,7 +155,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="text">Text:</label>
                                             <input type="text" className="form-control" name="text" ref={node => {
                                                 text = node;
-                                            }} onChange={this.handleText} placeholder="Text" defaultValue={this.state.renderText[this.state.textIndex].text}/>
+                                            }} onChange={this.handleText} placeholder="Text" value={this.state.renderText[this.state.textIndex].text}/>
                                             <PopModal 
                                                 handleDelete={this.handleDelete}
                                                 handleAdd={this.handleAdd}
@@ -169,7 +169,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" ref={node => {
                                             color = node;
-                                        }}onChange={this.handleColor} placeholder="Color" defaultValue={this.state.renderText[this.state.textIndex].color}/>
+                                        }}onChange={this.handleColor} placeholder="Color" value={this.state.renderText[this.state.textIndex].color}/>
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="backgroundColor">Background Color:</label>
@@ -256,7 +256,7 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="image">Image:</label>
                                         <input type="text" className="form-control" name="image" ref={node => {
                                             image = node;
-                                        }} onChange={this.handleImage} placeholder="Image" defaultValue={this.state.renderImage[this.state.imageIndex].image}/>
+                                        }} onChange={this.handleImage} placeholder="Image" value={this.state.renderImage[this.state.imageIndex].image}/>
                                         <div className="btn-group" role="group" aria-label="Basic example">
                                             <button type="button" className="btn btn-secondary">+</button>
                                             <button type="button" className="btn btn-secondary">-</button>
@@ -268,11 +268,9 @@ class CreateLogoScreen extends Component {
                                     <span className="hello"
                                         style={{
                                             display: "inline-block",
-                                            //color: this.state.renderColor ? this.state.renderColor : "#1f3eff",
                                             backgroundColor: this.state.renderBackgroundColor ? this.state.renderBackgroundColor : "#6BFF33",
                                             borderColor: this.state.renderBorderColor ? this.state.renderBorderColor : "#AB33FF",
                                             borderStyle: "solid",
-                                            fontSize: (this.state.renderFontSize ? this.state.renderFontSize : 40) + "pt",
                                             borderWidth: (this.state.renderBorderWidth ? this.state.renderBorderWidth : 10) + "px",
                                             borderRadius: (this.state.renderBorderRadius ? this.state.renderBorderRadius : 0) + "px",
                                             padding: (this.state.renderPadding ? this.state.renderPadding : 10) + "px",
@@ -360,7 +358,7 @@ class CreateLogoScreen extends Component {
                                                     <div 
                                                         style={{
                                                             color: t.color, 
-                                                            fontSize: t.fontSize + "pt",
+                                                            fontSize: t.fontSize + "px",
                                                             }}>
                                                         {t.text ? t.text : "Default Logo"}
                                                     </div>
