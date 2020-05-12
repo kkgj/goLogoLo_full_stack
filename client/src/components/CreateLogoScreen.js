@@ -65,26 +65,15 @@ class CreateLogoScreen extends Component {
     }
 
     handleText = (input) => {
+        let tempText = this.state.renderText;
         if (input.target.value.trim().length < 1) {
-            let tempText = this.state.renderText;
             tempText[this.state.textIndex].text = "";
             this.setState({renderText: tempText, buttonDisabled: true, errorMessage: "Text cannot be empty!"});
         } else {
-            let tempText = this.state.renderText;
             tempText[this.state.textIndex].text = input.target.value;
             this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
         }
     }
-
-    // handleDeleteText = () => {
-    //     if (this.state.renderText.length === 1) {
-    //         this.setState({deleteText: "You need to have at least one text!"});
-    //     } else {
-    //         let tempText = this.state.renderText;
-    //         tempText.splice(this.state.textIndex, 1);
-    //         this.setState({renderText: tempText, deleteText: ""});
-    //     }
-    // }
 
     handleColor = (input) => {
         let tempText = this.state.renderText;
@@ -94,8 +83,13 @@ class CreateLogoScreen extends Component {
 
     handleFontSize = (input) => {
         let tempText = this.state.renderText;
-        tempText[this.state.textIndex].fontSize = input.target.value;
-        this.setState({renderText: tempText, buttonDisabled: false, fontSizeMessage: ""});
+        if (input.target.value.trim().length < 1) {
+            tempText[this.state.textIndex].fontSize = "";
+            this.setState({renderText: tempText, buttonDisabled: true, fontSizeMessage: "Font Size cannot be empty!"});
+        } else {
+            tempText[this.state.textIndex].fontSize = input.target.value;
+            this.setState({renderText: tempText, buttonDisabled: false, fontSizeMessage: ""});
+        }
     }
 
     handleImage = (input) => {
@@ -107,7 +101,7 @@ class CreateLogoScreen extends Component {
     handleAdd = () => {
         let tempText = this.state.renderText;
         tempText.unshift({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
-        this.setState({ renderText: tempText, textIndex: 0, buttonDisabled: false, errorMessage: "" });
+        this.setState({ renderText: tempText, textIndex: 0, buttonDisabled: false, errorMessage: "", fontSizeMessage: "" });
     } 
 
     handleDelete = () => {
@@ -338,12 +332,17 @@ class CreateLogoScreen extends Component {
                                                             tempText[index] = t;
                                                             this.setState({ renderText: tempText });
                                                         }
-                                                        fontSize.value = t.fontSize;
-                                                        text.value = t.text;
-                                                        color.value = t.color;
+                                                        if (t.fontSize === "") {
+                                                            let tempText = this.state.renderText;
+                                                            t.fontSize = 40;
+                                                            tempText[index] = t;
+                                                            this.setState({ renderText: tempText });
+                                                        }
                                                         this.setState({
                                                             textIndex: index,
-                                                            buttonDisabled: false, errorMessage: ""
+                                                            buttonDisabled: false, 
+                                                            errorMessage: "",
+                                                            fontSizeMessage: ""
                                                         })
                                                     }}
                                                     onDragStop={(e, d) => { 
@@ -358,7 +357,7 @@ class CreateLogoScreen extends Component {
                                                     <div 
                                                         style={{
                                                             color: t.color, 
-                                                            fontSize: t.fontSize + "px",
+                                                            fontSize: t.fontSize ? t.fontSize + "px" : "40px",
                                                             }}>
                                                         {t.text ? t.text : "Default Logo"}
                                                     </div>
