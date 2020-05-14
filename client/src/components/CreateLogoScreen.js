@@ -123,7 +123,7 @@ class CreateLogoScreen extends Component {
                                 <h4><Link to="/" className={"btn btn-secondary btn-block"}>Home</Link></h4>
                                 <h3 className="panel-title">
                                     Create Logo
-                            </h3>
+                                </h3>
                             </div>
                             <div className="panel-body row">
                                 <form className="col-6" onSubmit={e => {
