@@ -10,6 +10,7 @@
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
     "react-bootstrap": "^1.0.1",
+    "react-component-export-image": "^0.1.4",
     "react-dom": "^16.8.6",
     "react-rnd": "^10.1.9",
     "react-router-dom": "^5.0.0",

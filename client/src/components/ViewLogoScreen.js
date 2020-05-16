@@ -3,14 +3,20 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
+import { Rnd } from 'react-rnd';
+import { exportComponentAsPNG } from "react-component-export-image";
 
 const GET_LOGO = gql`
     query logo($logoId: String) {
         logo(id: $logoId) {
             _id
-            text
-            color
-            fontSize
+            textArray {
+                text
+                color 
+                fontSize
+                x
+                y
+            }
             backgroundColor
             borderColor
             borderWidth
@@ -19,6 +25,13 @@ const GET_LOGO = gql`
             margin
             height
             width
+            imageArray {
+                image
+                imageHeight
+                imageWidth
+                imageX
+                imageY
+            }
             lastUpdate
         }
     }
@@ -33,6 +46,11 @@ const DELETE_LOGO = gql`
 `;
 
 class ViewLogoScreen extends Component {
+
+    constructor(props) {
+        super(props);
+        this.componentRef = React.createRef();
+    }
 
     render() {
         return (
@@ -54,15 +72,15 @@ class ViewLogoScreen extends Component {
                                     <div className="col-6">
                                         <dl>
                                             <dt>Text:</dt>
-                                            <dd>{data.logo.text}</dd>
+                                            <dd>{data.logo.textArray.map((element) => element.text + " ")}</dd>
                                             <dt>Color:</dt>
-                                            <dd>{data.logo.color}</dd>
+                                            <dd>{data.logo.textArray.map((element) => element.color + " ")}</dd>
                                             <dt>BackgroundColor:</dt>
                                             <dd>{data.logo.backgroundColor}</dd>
                                             <dt>BorderColor:</dt>
                                             <dd>{data.logo.borderColor}</dd>
                                             <dt>Font Size:</dt>
-                                            <dd>{data.logo.fontSize}</dd>
+                                            <dd>{data.logo.textArray.map((element) => element.fontSize + " ")}</dd>
                                             <dt>Border Width:</dt>
                                             <dd>{data.logo.borderWidth}</dd>
                                             <dt>Border Radius:</dt>
@@ -75,42 +93,87 @@ class ViewLogoScreen extends Component {
                                             <dd>{data.logo.height}</dd>
                                             <dt>Width:</dt>
                                             <dd>{data.logo.width}</dd>
+                                            <dt>Image:</dt>
+                                            <dd>{data.logo.imageArray.map((element) => element.image + " ")}</dd>
                                             <dt>Last Updated:</dt>
                                             <dd>{data.logo.lastUpdate}</dd>
                                         </dl>
                                         <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
-                                        {(removeLogo, { loading, error }) => (
-                                            <div>
-                                                <form
-                                                    onSubmit={e => {
-                                                        e.preventDefault();
-                                                        removeLogo({ variables: { id: data.logo._id } });
-                                                    }}>
-                                                    <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
-                                                <button type="submit" className="btn btn-danger">Delete</button>
-                                                </form>
-                                                {loading && <p>Loading...</p>}
-                                                {error && <p>Error :( Please try again</p>}
-                                            </div>
-                                        )}
-                                    </Mutation>
+                                            {(removeLogo, { loading, error }) => (
+                                                <div>
+                                                    <form
+                                                        onSubmit={e => {
+                                                            e.preventDefault();
+                                                            removeLogo({ variables: { id: data.logo._id } });
+                                                        }}>
+                                                        <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
+                                                        <button type="submit" className="btn btn-danger">Delete</button>&nbsp;
+                                                            <React.Fragment>
+                                                            <button className="btn btn-primary" onClick={() => exportComponentAsPNG(this.componentRef)}>
+                                                                Export
+                                                            </button>
+                                                        </React.Fragment>
+                                                    </form>
+                                                    {loading && <p>Loading...</p>}
+                                                    {error && <p>Error :( Please try again</p>}
+                                                </div>
+                                            )}
+                                        </Mutation>
                                     </div>
                                     <div className="col-6">
-                                        <span style={{
-                                            display: "inline-block",
-                                            color: data.logo.color,
-                                            backgroundColor: data.logo.backgroundColor,
-                                            borderColor: data.logo.borderColor,
-                                            borderStyle: "solid",
-                                            fontSize: data.logo.fontSize + "pt",
-                                            borderWidth: data.logo.borderWidth + "px",
-                                            borderRadius: data.logo.borderRadius + "px",
-                                            padding: data.logo.padding + "px",
-                                            margin: data.logo.margin + "px",
-                                            whiteSpace: "pre",
-                                            height: data.logo.height + "px",
-                                            width: data.logo.width + "px"
-                                        }}>{data.logo.text}</span>
+                                        <span
+                                            ref={this.componentRef}
+                                            style={{
+                                                display: "inline-block",
+                                                backgroundColor: data.logo.backgroundColor,
+                                                borderColor: data.logo.borderColor,
+                                                borderStyle: "solid",
+                                                borderWidth: data.logo.borderWidth + "px",
+                                                borderRadius: data.logo.borderRadius + "px",
+                                                padding: data.logo.padding + "px",
+                                                margin: data.logo.margin + "px",
+                                                whiteSpace: "pre",
+                                                height: data.logo.height + "px",
+                                                width: data.logo.width + "px",
+                                            }}>
+                                            <div style={{ position: "absolute" }}>
+                                                {data.logo.imageArray.map((element, index) =>
+                                                    <Rnd
+                                                        disableDragging="true"
+                                                        enableResizing="false"
+                                                        key={index}
+                                                        size={{ width: element.imageWidth, height: element.imageHeight }}
+                                                        position={{ x: element.imageX, y: element.imageY }}
+                                                    >
+                                                        <img
+                                                            src={element.image}
+                                                            alt=""
+                                                            style={{ height: "100%", width: "100%" }}
+                                                            draggable="false"
+                                                        />
+                                                    </Rnd>
+                                                )}
+                                            </div>
+                                            <div style={{ position: "absolute" }}>
+                                                {data.logo.textArray.map((t, index) =>
+                                                    <Rnd
+                                                        disableDragging="true"
+                                                        enableResizing="false"
+                                                        style={{ zIndex: t.text.zIndex }}
+                                                        key={index}
+                                                        position={{ x: t.x, y: t.y }}
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                color: t.color,
+                                                                fontSize: t.fontSize ? t.fontSize + "px" : "40px",
+                                                            }}>
+                                                            {t.text ? t.text : "Default Logo"}
+                                                        </div>
+                                                    </Rnd>
+                                                )}
+                                            </div>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

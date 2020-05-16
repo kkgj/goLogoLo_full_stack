@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 import { clamp } from '../utils/utlity';
 import { Rnd } from 'react-rnd';
-import PopModal from './PopModal'
+import PopModal from './PopModal';
 
 const ADD_LOGO = gql`
     mutation AddLogo(
@@ -36,11 +36,10 @@ const ADD_LOGO = gql`
 
 class CreateLogoScreen extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
-        
         this.state = {
-            renderText: [{text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 0, y: 0}],
+            renderText: [{ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 0, y: 0 }],
             renderBackgroundColor: "#6BFF33",
             renderBorderColor: "#AB33FF",
             renderBorderWidth: "10",
@@ -49,7 +48,7 @@ class CreateLogoScreen extends Component {
             renderMargin: "10",
             renderHeight: "630",
             renderWidth: "530",
-            renderImage: [{image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 300, imageWidth: 200, imageX: 10, imageY: 10}],
+            renderImage: [{ image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 300, imageWidth: 200, imageX: 10, imageY: 10 }],
             buttonDisabled: false,
             errorMessage: "",
             fontSizeMessage: "",
@@ -68,47 +67,64 @@ class CreateLogoScreen extends Component {
         let tempText = this.state.renderText;
         if (input.target.value.trim().length < 1) {
             tempText[this.state.textIndex].text = "";
-            this.setState({renderText: tempText, buttonDisabled: true, errorMessage: "Text cannot be empty!"});
+            this.setState({ renderText: tempText, buttonDisabled: true, errorMessage: "Text cannot be empty!" });
         } else {
             tempText[this.state.textIndex].text = input.target.value;
-            this.setState({renderText: tempText, buttonDisabled: false, errorMessage: ""});
+            this.setState({ renderText: tempText, buttonDisabled: false, errorMessage: "" });
         }
     }
 
     handleColor = (input) => {
         let tempText = this.state.renderText;
         tempText[this.state.textIndex].color = input.target.value;
-        this.setState({renderText: tempText});
+        this.setState({ renderText: tempText });
     }
 
     handleFontSize = (input) => {
         let tempText = this.state.renderText;
         if (input.target.value.trim().length < 1) {
             tempText[this.state.textIndex].fontSize = "";
-            this.setState({renderText: tempText, buttonDisabled: true, fontSizeMessage: "Font Size cannot be empty!"});
+            this.setState({ renderText: tempText, buttonDisabled: true, fontSizeMessage: "Font Size cannot be empty!" });
         } else {
-            tempText[this.state.textIndex].fontSize = input.target.value;
-            this.setState({renderText: tempText, buttonDisabled: false, fontSizeMessage: ""});
+            tempText[this.state.textIndex].fontSize = parseInt(input.target.value);
+            this.setState({ renderText: tempText, buttonDisabled: false, fontSizeMessage: "" });
         }
     }
 
     handleImage = (input) => {
         let tempImage = this.state.renderImage;
         tempImage[this.state.imageIndex].image = input.target.value;
-        this.setState({renderImage: tempImage});
+        this.setState({ renderImage: tempImage });
     }
 
     handleAdd = () => {
         let tempText = this.state.renderText;
         tempText.unshift({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
         this.setState({ renderText: tempText, textIndex: 0, buttonDisabled: false, errorMessage: "", fontSizeMessage: "" });
-    } 
+    }
 
     handleDelete = () => {
         if (this.state.renderText.length > 1) {
             let tempText = this.state.renderText;
             tempText.splice(this.state.textIndex, 1);
-            this.setState({textIndex: 0, renderText: tempText, buttonDisabled: false, errorMessage: ""});
+            this.setState({ textIndex: 0, renderText: tempText, buttonDisabled: false, errorMessage: "" });
+        }
+    }
+
+    handleAddImage = () => {
+        let tempImage = this.state.renderImage;
+        tempImage.unshift({ image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 200, imageWidth: 120, imageX: 160, imageY: 30 });
+        this.setState({ renderImage: tempImage, imageIndex: 0 });
+    }
+
+    handleDeleteImage = () => {
+        if (this.state.renderImage.length > 0) {
+            let tempImage = this.state.renderImage;
+            tempImage.splice(this.state.imageIndex, 1);
+            this.setState({ imageIndex: 0, renderImage: tempImage });
+            if (this.state.renderImage.length === 0) {
+                this.setState({ imageIndex: -1 });
+            }
         }
     }
 
@@ -128,10 +144,14 @@ class CreateLogoScreen extends Component {
                             <div className="panel-body row">
                                 <form className="col-6" onSubmit={e => {
                                     e.preventDefault();
-                                    addLogo({ variables: { textArray: this.state.renderText, backgroundColor: backgroundColor.value, 
-                                        borderColor: borderColor.value, borderWidth: parseInt(borderWidth.value), borderRadius: 
-                                        parseInt(borderRadius.value), padding: parseInt(padding.value), margin: parseInt(margin.value),
-                                        height: parseInt(height.value), width: parseInt(width.value), imageArray: this.state.renderImage }});
+                                    addLogo({
+                                        variables: {
+                                            textArray: this.state.renderText, backgroundColor: backgroundColor.value,
+                                            borderColor: borderColor.value, borderWidth: parseInt(borderWidth.value), borderRadius:
+                                                parseInt(borderRadius.value), padding: parseInt(padding.value), margin: parseInt(margin.value),
+                                            height: parseInt(height.value), width: parseInt(width.value), imageArray: this.state.renderImage
+                                        }
+                                    });
                                     text.value = "";
                                     color.value = "";
                                     fontSize.value = "";
@@ -145,16 +165,17 @@ class CreateLogoScreen extends Component {
                                     width.value = "";
                                     image.value = "";
                                 }}>
+
                                     <div className="form-group col-8">
                                         <label htmlFor="text">Text:</label>
-                                            <input type="text" className="form-control" name="text" ref={node => {
-                                                text = node;
-                                            }} onChange={this.handleText} placeholder="Text" value={this.state.renderText[this.state.textIndex].text}/>
-                                            <PopModal 
-                                                handleDelete={this.handleDelete}
-                                                handleAdd={this.handleAdd}
-                                                message={true}
-                                                flag={this.state.renderText.length===1}/>
+                                        <input type="text" className="form-control" name="text" ref={node => {
+                                            text = node;
+                                        }} onChange={this.handleText} placeholder="Text" value={this.state.renderText[this.state.textIndex].text} />
+                                        <PopModal
+                                            handleDelete={this.handleDelete}
+                                            handleAdd={this.handleAdd}
+                                            message={true}
+                                            flag={this.state.renderText.length === 1} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.errorMessage}
                                         </p>
@@ -163,85 +184,85 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="color">Color:</label>
                                         <input type="color" className="form-control" name="color" ref={node => {
                                             color = node;
-                                        }}onChange={this.handleColor} placeholder="Color" value={this.state.renderText[this.state.textIndex].color}/>
+                                        }} onChange={this.handleColor} placeholder="Color" value={this.state.renderText[this.state.textIndex].color} />
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="backgroundColor">Background Color:</label>
                                         <input type="color" className="form-control" name="backgroundColor" ref={node => {
                                             backgroundColor = node;
-                                        }} onChange={() => this.setState({renderBackgroundColor: backgroundColor.value})} placeholder="Background Color" defaultValue={this.state.renderBackgroundColor}/> 
+                                        }} onChange={() => this.setState({ renderBackgroundColor: backgroundColor.value })} placeholder="Background Color" defaultValue={this.state.renderBackgroundColor} />
                                     </div>
                                     <div className="form-group col-4">
                                         <label htmlFor="borderColor">Border Color:</label>
                                         <input type="color" className="form-control" name="borderColor" ref={node => {
                                             borderColor = node;
-                                        }} onChange={() => this.setState({renderBorderColor: borderColor.value})} placeholder="Border Color" defaultValue={this.state.renderBorderColor}/>
+                                        }} onChange={() => this.setState({ renderBorderColor: borderColor.value })} placeholder="Border Color" defaultValue={this.state.renderBorderColor} />
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="fontSize">Font Size:</label>
-                                        <input type="text" onInput={()=>{fontSize.value = clamp(fontSize.value, 0, 144);}} className="form-control" name="fontSize" ref={node => {
+                                        <input type="text" onInput={() => { fontSize.value = clamp(fontSize.value, 0, 144); }} className="form-control" name="fontSize" ref={node => {
                                             fontSize = node;
-                                        }} onChange={this.handleFontSize} placeholder="Font Size" value={this.state.renderText[this.state.textIndex].fontSize}/>
+                                        }} onChange={this.handleFontSize} placeholder="Font Size" value={this.state.renderText[this.state.textIndex].fontSize} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.fontSizeMessage}
                                         </p>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="borderWidth">Border Width:</label>
-                                        <input type="number" onInput={()=>{borderWidth.value = clamp(borderWidth.value, 0, 100);}} className="form-control" name="borderWidth" ref={node => {
+                                        <input type="number" onInput={() => { borderWidth.value = clamp(borderWidth.value, 0, 100); }} className="form-control" name="borderWidth" ref={node => {
                                             borderWidth = node;
-                                        }} onChange={() => borderWidth.value.trim().length < 1 ? this.setState({ renderBorderWidth: borderWidth.value, buttonDisabled: true, borderWidthMessage: "Border Width cannot be empty" }) 
-                                        : this.setState({renderBorderWidth: borderWidth.value, buttonDisabled: false, borderWidthMessage: ""})} placeholder="Border Width" defaultValue={this.state.renderBorderWidth}/>
+                                        }} onChange={() => borderWidth.value.trim().length < 1 ? this.setState({ renderBorderWidth: borderWidth.value, buttonDisabled: true, borderWidthMessage: "Border Width cannot be empty" })
+                                            : this.setState({ renderBorderWidth: borderWidth.value, buttonDisabled: false, borderWidthMessage: "" })} placeholder="Border Width" defaultValue={this.state.renderBorderWidth} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.borderWidthMessage}
                                         </p>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="borderRadius">Border Radius:</label>
-                                        <input type="number" onInput={()=>{borderRadius.value = clamp(borderRadius.value, 0, 100);}} className="form-control" name="borderRadius" ref={node => {
+                                        <input type="number" onInput={() => { borderRadius.value = clamp(borderRadius.value, 0, 100); }} className="form-control" name="borderRadius" ref={node => {
                                             borderRadius = node;
-                                        }} onChange={() => borderRadius.value.trim().length < 1 ? this.setState({ renderBorderRadius: borderRadius.value, buttonDisabled: true, borderRadiusMessage: "Border Radius cannot be empty" }) 
-                                        : this.setState({renderBorderRadius: borderRadius.value, buttonDisabled: false, borderRadiusMessage: ""})} placeholder="Border Radius" defaultValue={this.state.renderBorderRadius}/>
+                                        }} onChange={() => borderRadius.value.trim().length < 1 ? this.setState({ renderBorderRadius: borderRadius.value, buttonDisabled: true, borderRadiusMessage: "Border Radius cannot be empty" })
+                                            : this.setState({ renderBorderRadius: borderRadius.value, buttonDisabled: false, borderRadiusMessage: "" })} placeholder="Border Radius" defaultValue={this.state.renderBorderRadius} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.borderRadiusMessage}
                                         </p>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="padding">Padding:</label>
-                                        <input type="number" onInput={()=>{padding.value = clamp(padding.value, 0, 100);}} className="form-control" name="padding" ref={node => {
+                                        <input type="number" onInput={() => { padding.value = clamp(padding.value, 0, 100); }} className="form-control" name="padding" ref={node => {
                                             padding = node;
-                                        }} onChange={() => padding.value.trim().length < 1 ? this.setState({ renderPadding: padding.value, buttonDisabled: true, paddingMessage: "Padding cannot be empty" }) 
-                                        : this.setState({renderPadding: padding.value, buttonDisabled: false, paddingMessage: ""})} placeholder="Padding" defaultValue={this.state.renderPadding}/>
+                                        }} onChange={() => padding.value.trim().length < 1 ? this.setState({ renderPadding: padding.value, buttonDisabled: true, paddingMessage: "Padding cannot be empty" })
+                                            : this.setState({ renderPadding: padding.value, buttonDisabled: false, paddingMessage: "" })} placeholder="Padding" defaultValue={this.state.renderPadding} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.paddingMessage}
                                         </p>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="margin">Margin:</label>
-                                        <input type="number" onInput={()=>{margin.value = clamp(margin.value, 0, 100);}} className="form-control" name="margin" ref={node => {
+                                        <input type="number" onInput={() => { margin.value = clamp(margin.value, 0, 100); }} className="form-control" name="margin" ref={node => {
                                             margin = node;
-                                        }} onChange={() => margin.value.trim().length < 1 ? this.setState({ renderMargin: margin.value, buttonDisabled: true, marginMessage: "Margin cannot be empty" }) 
-                                        : this.setState({renderMargin: margin.value, buttonDisabled: false, marginMessage: ""})} placeholder="Margin" defaultValue={this.state.renderMargin}/>
+                                        }} onChange={() => margin.value.trim().length < 1 ? this.setState({ renderMargin: margin.value, buttonDisabled: true, marginMessage: "Margin cannot be empty" })
+                                            : this.setState({ renderMargin: margin.value, buttonDisabled: false, marginMessage: "" })} placeholder="Margin" defaultValue={this.state.renderMargin} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.marginMessage}
                                         </p>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="height">Height:</label>
-                                        <input type="number" onInput={()=>{height.value = clamp(height.value, 0, 800);}} className="form-control" name="height" ref={node => {
+                                        <input type="number" onInput={() => { height.value = clamp(height.value, 0, 800); }} className="form-control" name="height" ref={node => {
                                             height = node;
-                                        }} onChange={() => height.value.trim().length < 1 ? this.setState({ renderHeight: height.value, buttonDisabled: true, heightMessage: "Height cannot be empty" }) 
-                                        : this.setState({renderHeight: height.value, buttonDisabled: false, heightMessage: ""})} placeholder="Height" defaultValue={this.state.renderHeight}/>
+                                        }} onChange={() => height.value.trim().length < 1 ? this.setState({ renderHeight: height.value, buttonDisabled: true, heightMessage: "Height cannot be empty" })
+                                            : this.setState({ renderHeight: height.value, buttonDisabled: false, heightMessage: "" })} placeholder="Height" defaultValue={this.state.renderHeight} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.heightMessage}
                                         </p>
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="width">Width:</label>
-                                        <input type="number" onInput={()=>{width.value = clamp(width.value, 0, 1000);}} className="form-control" name="height" ref={node => {
+                                        <input type="number" onInput={() => { width.value = clamp(width.value, 0, 1000); }} className="form-control" name="height" ref={node => {
                                             width = node;
-                                        }} onChange={() => width.value.trim().length < 1 ? this.setState({ renderWidth: width.value, buttonDisabled: true, widthMessage: "Width cannot be empty" }) 
-                                        : this.setState({renderWidth: width.value, buttonDisabled: false, widthMessage: ""})} placeholder="Width" defaultValue={this.state.renderWidth}/>
+                                        }} onChange={() => width.value.trim().length < 1 ? this.setState({ renderWidth: width.value, buttonDisabled: true, widthMessage: "Width cannot be empty" })
+                                            : this.setState({ renderWidth: width.value, buttonDisabled: false, widthMessage: "" })} placeholder="Width" defaultValue={this.state.renderWidth} />
                                         <p style={{ color: 'red' }}>
                                             {this.state.widthMessage}
                                         </p>
@@ -250,11 +271,12 @@ class CreateLogoScreen extends Component {
                                         <label htmlFor="image">Image:</label>
                                         <input type="text" className="form-control" name="image" ref={node => {
                                             image = node;
-                                        }} onChange={this.handleImage} placeholder="Image" value={this.state.renderImage[this.state.imageIndex].image}/>
-                                        <div className="btn-group" role="group" aria-label="Basic example">
-                                            <button type="button" className="btn btn-secondary">+</button>
-                                            <button type="button" className="btn btn-secondary">-</button>
-                                        </div> 
+                                        }} onChange={this.handleImage} placeholder="Image" value={this.state.imageIndex === -1 ? "" : this.state.renderImage[this.state.imageIndex].image} />
+                                        <PopModal
+                                            handleDelete={this.handleDeleteImage}
+                                            handleAdd={this.handleAddImage}
+                                            message={false}
+                                            flag={this.state.renderImage.length === 0} />
                                     </div>
                                     <button disabled={this.state.buttonDisabled} type="submit" className="btn btn-success">Submit</button>
                                 </form>
@@ -272,14 +294,14 @@ class CreateLogoScreen extends Component {
                                             height: (this.state.renderHeight ? this.state.renderHeight : 630) + "px",
                                             width: (this.state.renderWidth ? this.state.renderWidth : 530) + "px",
                                             whiteSpace: "pre"
-                                    }}>
-                                        <div style={{position: "absolute"}}>
-                                            {this.state.renderImage.map((element, index) => 
+                                        }}>
+                                        <div style={{ position: "absolute" }}>
+                                            {this.state.renderImage.map((element, index) =>
                                                 <Rnd
                                                     bounds=".hello"
                                                     key={index}
-                                                    style={this.state.imageIndex === index ? {zIndex:"1"} : {zIndex:"0"}}
-                                                    size={{ width: element.imageWidth,  height: element.imageHeight }}
+                                                    style={this.state.imageIndex === index ? { zIndex: "1" } : { zIndex: "0" }}
+                                                    size={{ width: element.imageWidth, height: element.imageHeight }}
                                                     position={{ x: element.imageX, y: element.imageY }}
                                                     onDragStart={(e, d) => {
                                                         this.setState({
@@ -291,38 +313,39 @@ class CreateLogoScreen extends Component {
                                                             imageIndex: index
                                                         })
                                                     }}
-                                                    onDragStop={(e, d) => { 
+                                                    onDragStop={(e, d) => {
                                                         let tempImage = this.state.renderImage;
-                                                        tempImage[index].imageX = d.x;
-                                                        tempImage[index].imageY = d.y;
-                                                        this.setState({ renderImage: tempImage }) 
+                                                        tempImage[index].imageX = parseInt(d.x);
+                                                        tempImage[index].imageY = parseInt(d.y);
+                                                        this.setState({ renderImage: tempImage })
                                                     }}
                                                     onResizeStop={(e, direction, ref, delta, position) => {
                                                         let tempImage = this.state.renderImage;
-                                                        tempImage[index].imageX = position.x;
-                                                        tempImage[index].imageY = position.y;
-                                                        tempImage[index].imageHeight =  ref.style.height;
-                                                        tempImage[index].imageWidth = ref.style.width;
-                                                        this.setState({  
+                                                        tempImage[index].imageX = parseInt(position.x);
+                                                        tempImage[index].imageY = parseInt(position.y);
+                                                        tempImage[index].imageHeight = parseInt(ref.style.height);
+                                                        tempImage[index].imageWidth = parseInt(ref.style.width);
+                                                        this.setState({
                                                             renderImage: tempImage,
                                                             imageIndex: index
                                                         });
                                                     }}
-                                                    >
-                                                    <img 
+                                                >
+                                                    <img
                                                         src={element.image}
-                                                        alt=""
-                                                        style={{height: "100%", width: "100%"}}
+                                                        alt="empty image"
+                                                        style={{ height: "100%", width: "100%" }}
                                                         draggable="false"
-                                                        />
+                                                    />
                                                 </Rnd>
                                             )}
                                         </div>
-                                        <div style={{position: "absolute"}}>
-                                            {this.state.renderText.map((t, index) => 
+                                        <div style={{ position: "absolute" }}>
+                                            {this.state.renderText.map((t, index) =>
                                                 <Rnd
+                                                    enableResizing="false"
                                                     bounds=".hello"
-                                                    style={this.state.textIndex === index ? {zIndex:"2"} : {zIndex:"1"}}
+                                                    style={this.state.textIndex === index ? { zIndex: "2" } : { zIndex: "1" }}
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStart={(e, d) => {
@@ -340,25 +363,25 @@ class CreateLogoScreen extends Component {
                                                         }
                                                         this.setState({
                                                             textIndex: index,
-                                                            buttonDisabled: false, 
+                                                            buttonDisabled: false,
                                                             errorMessage: "",
                                                             fontSizeMessage: ""
                                                         })
                                                     }}
-                                                    onDragStop={(e, d) => { 
+                                                    onDragStop={(e, d) => {
                                                         let tempText = this.state.renderText;
                                                         tempText[index].x = d.x;
                                                         tempText[index].y = d.y;
-                                                        this.setState({  
+                                                        this.setState({
                                                             renderText: tempText,
                                                             textIndex: index
                                                         });
                                                     }}>
-                                                    <div 
+                                                    <div
                                                         style={{
-                                                            color: t.color, 
+                                                            color: t.color,
                                                             fontSize: t.fontSize ? t.fontSize + "px" : "40px",
-                                                            }}>
+                                                        }}>
                                                         {t.text ? t.text : "Default Logo"}
                                                     </div>
                                                 </Rnd>
