@@ -333,7 +333,7 @@ class CreateLogoScreen extends Component {
                                                 >
                                                     <img
                                                         src={element.image}
-                                                        alt="empty image"
+                                                        alt="empty"
                                                         style={{ height: "100%", width: "100%" }}
                                                         draggable="false"
                                                     />
