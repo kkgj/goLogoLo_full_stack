@@ -93,8 +93,13 @@ class CreateLogoScreen extends Component {
 
     handleImage = (input) => {
         let tempImage = this.state.renderImage;
-        tempImage[this.state.imageIndex].image = input.target.value;
-        this.setState({ renderImage: tempImage });
+        if (this.state.renderImage.length === 0) {
+            tempImage.unshift({ image: input.target.value, imageHeight: 200, imageWidth: 180, imageX: 150, imageY: 20 });
+            this.setState({ renderImage: tempImage, imageIndex: 0 });
+        } else {
+            tempImage[this.state.imageIndex].image = input.target.value;
+            this.setState({ renderImage: tempImage });
+        }
     }
 
     handleAdd = () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
+import { Mutation } from "react-apollo";
 import { clamp } from "../utils/utlity";
 import { Rnd } from 'react-rnd';
 import PopModal from './PopModal';
@@ -69,11 +69,11 @@ export default class EditSubScreen extends Component {
 
     componentDidMount = () => {
         let tempText = this.state.renderText;
-        tempText.map((e)=> delete e.__typename);
-        this.setState({ renderText: tempText});
+        tempText.map((e) => delete e.__typename);
+        this.setState({ renderText: tempText });
         let tempImage = this.state.renderImage;
-        tempImage.map((e)=> delete e.__typename);
-        this.setState({ renderImage: tempImage});
+        tempImage.map((e) => delete e.__typename);
+        this.setState({ renderImage: tempImage });
     }
 
     handleText = (input) => {
@@ -99,15 +99,20 @@ export default class EditSubScreen extends Component {
             tempText[this.state.textIndex].fontSize = "";
             this.setState({ renderText: tempText, buttonDisabled: true, fontSizeMessage: "Font Size cannot be empty!" });
         } else {
-            tempText[this.state.textIndex].fontSize = clamp(input.target.value, 4, 144);
+            tempText[this.state.textIndex].fontSize = parseInt(clamp(input.target.value, 1, 144));
             this.setState({ renderText: tempText, buttonDisabled: false, fontSizeMessage: "" });
         }
     }
 
     handleImage = (input) => {
         let tempImage = this.state.renderImage;
-        tempImage[this.state.imageIndex].image = input.target.value;
-        this.setState({ renderImage: tempImage });
+        if (this.state.renderImage.length === 0) {
+            tempImage.unshift({ image: input.target.value, imageHeight: 200, imageWidth: 180, imageX: 150, imageY: 20 });
+            this.setState({ renderImage: tempImage, imageIndex: 0 });
+        } else {
+            tempImage[this.state.imageIndex].image = input.target.value;
+            this.setState({ renderImage: tempImage });
+        }
     }
 
     handleAdd = () => {
@@ -143,49 +148,49 @@ export default class EditSubScreen extends Component {
 
     handleBorderWidth = (event) => {
         if (event.target.value.trim().length < 1) {
-            this.setState({ buttonDisabled: true, borderWidthMessage: "Border Width cannot be empty!" });
+            this.setState({ renderBorderWidth: event.target.value, buttonDisabled: true, borderWidthMessage: "Border Width cannot be empty!" });
         } else {
-            this.setState({ renderBorderWidth: clamp(event.target.value, 0, 100), buttonDisabled: true, borderWidthMessage: "" });
+            this.setState({ renderBorderWidth: clamp(event.target.value, 0, 100), buttonDisabled: false, borderWidthMessage: "" });
         }
     }
 
     handleBorderRadius = (event) => {
         if (event.target.value.trim().length < 1) {
-            this.setState({ buttonDisabled: true, borderRadiusMessage: "Border Radius cannot be empty!" });
+            this.setState({ renderBorderRadius: event.target.value, buttonDisabled: true, borderRadiusMessage: "Border Radius cannot be empty!" });
         } else {
-            this.setState({ renderBorderRadius: clamp(event.target.value, 0, 100), buttonDisabled: true, borderRadiusMessage: "" });
+            this.setState({ renderBorderRadius: clamp(event.target.value, 0, 100), buttonDisabled: false, borderRadiusMessage: "" });
         }
     }
 
     handlePadding = (event) => {
         if (event.target.value.trim().length < 1) {
-            this.setState({ buttonDisabled: true, paddingMessage: "Padding cannot be empty!" });
+            this.setState({ renderPadding: event.target.value, buttonDisabled: true, paddingMessage: "Padding cannot be empty!" });
         } else {
-            this.setState({ renderPadding: clamp(event.target.value, 0, 100), buttonDisabled: true, paddingMessage: "" });
+            this.setState({ renderPadding: clamp(event.target.value, 0, 100), buttonDisabled: false, paddingMessage: "" });
         }
     }
 
     handleMargin = (event) => {
         if (event.target.value.trim().length < 1) {
-            this.setState({ buttonDisabled: true, marginMessage: "Margin cannot be empty!" });
+            this.setState({ renderMargin: event.target.value, buttonDisabled: true, marginMessage: "Margin cannot be empty!" });
         } else {
-            this.setState({ renderMargin: clamp(event.target.value, 0, 100), buttonDisabled: true, marginMessage: "" });
+            this.setState({ renderMargin: clamp(event.target.value, 0, 100), buttonDisabled: false, marginMessage: "" });
         }
     }
 
     handleHeight = (event) => {
         if (event.target.value.trim().length < 1) {
-            this.setState({ buttonDisabled: true, heightMessage: "Height cannot be empty!" });
+            this.setState({ renderHeight: event.target.value, buttonDisabled: true, heightMessage: "Height cannot be empty!" });
         } else {
-            this.setState({ renderHeight: clamp(event.target.value, 0, 800), buttonDisabled: true, heightMessage: "" });
+            this.setState({ renderHeight: clamp(event.target.value, 1, 800), buttonDisabled: false, heightMessage: "" });
         }
     }
 
     handleWidth = (event) => {
         if (event.target.value.trim().length < 1) {
-            this.setState({ buttonDisabled: true, marginMessage: "Width cannot be empty!" });
+            this.setState({ renderWidth: event.target.value, buttonDisabled: true, widthMessage: "Width cannot be empty!" });
         } else {
-            this.setState({ renderWidth: clamp(event.target.value, 0, 1000), buttonDisabled: true, widthMessage: "" });
+            this.setState({ renderWidth: clamp(event.target.value, 1, 1000), buttonDisabled: false, widthMessage: "" });
         }
     }
 
@@ -208,9 +213,9 @@ export default class EditSubScreen extends Component {
                                     updateLogo({
                                         variables: {
                                             id: this.props.logo._id, textArray: this.state.renderText, backgroundColor: this.state.renderBackgroundColor,
-                                            borderColor: this.state.renderBorderColor, borderWidth: this.state.renderBorderWidth, borderRadius:
-                                                this.state.renderBorderRadius, padding: this.state.renderPadding, margin: this.state.renderMargin,
-                                            height: this.state.renderHeight, width: this.state.renderWidth, imageArray: this.state.renderImage
+                                            borderColor: this.state.renderBorderColor, borderWidth: parseInt(this.state.renderBorderWidth), borderRadius:
+                                                parseInt(this.state.renderBorderRadius), padding: parseInt(this.state.renderPadding), margin: parseInt(this.state.renderMargin),
+                                            height: parseInt(this.state.renderHeight), width: parseInt(this.state.renderWidth), imageArray: this.state.renderImage
                                         }
                                     });
                                 }}>
@@ -301,7 +306,7 @@ export default class EditSubScreen extends Component {
                                     </div>
                                     <div className="form-group col-8">
                                         <label htmlFor="image">Image:</label>
-                                        <input type="text" className="form-control" name="image" onChange={this.handleImage} placeholder="Image" value={this.state.imageIndex === -1 ? "" : this.state.renderImage[this.state.imageIndex].image} />
+                                        <input type="text" className="form-control" name="image" onChange={this.handleImage} placeholder="Image" value={this.state.renderImage.length === 0 ? "" : this.state.renderImage[this.state.imageIndex].image} />
                                         <PopModal
                                             handleDelete={this.handleDeleteImage}
                                             handleAdd={this.handleAddImage}
