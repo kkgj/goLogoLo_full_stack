@@ -98,27 +98,29 @@ class ViewLogoScreen extends Component {
                                             <dt>Last Updated:</dt>
                                             <dd>{data.logo.lastUpdate}</dd>
                                         </dl>
-                                        <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
-                                            {(removeLogo, { loading, error }) => (
-                                                <div>
-                                                    <form
-                                                        onSubmit={e => {
-                                                            e.preventDefault();
-                                                            removeLogo({ variables: { id: data.logo._id } });
-                                                        }}>
-                                                        <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
+                                        <div className="row">
+                                            <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
+                                                {(removeLogo, { loading, error }) => (
+                                                    <div>
+                                                        <form
+                                                            onSubmit={e => {
+                                                                e.preventDefault();
+                                                                removeLogo({ variables: { id: data.logo._id } });
+                                                            }}>
+                                                            <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
                                                         <button type="submit" className="btn btn-danger">Delete</button>&nbsp;
-                                                            <React.Fragment>
-                                                            <button className="btn btn-primary" onClick={() => exportComponentAsPNG(this.componentRef)}>
-                                                                Export
-                                                            </button>
-                                                        </React.Fragment>
                                                     </form>
-                                                    {loading && <p>Loading...</p>}
-                                                    {error && <p>Error :( Please try again</p>}
-                                                </div>
-                                            )}
-                                        </Mutation>
+                                                        {loading && <p>Loading...</p>}
+                                                        {error && <p>Error :( Please try again</p>}
+                                                    </div>
+                                                )}
+                                            </Mutation>
+                                            <React.Fragment>
+                                                <button className="btn btn-primary" onClick={() => exportComponentAsPNG(this.componentRef)}>
+                                                    Export
+                                                </button>
+                                            </React.Fragment>
+                                        </div>
                                     </div>
                                     <div className="col-6">
                                         <span

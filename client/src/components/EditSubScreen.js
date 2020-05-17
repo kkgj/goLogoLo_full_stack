@@ -5,7 +5,6 @@ import { Query, Mutation } from "react-apollo";
 import { clamp } from "../utils/utlity";
 import { Rnd } from 'react-rnd';
 import PopModal from './PopModal';
-import { First } from 'react-bootstrap/PageItem';
 
 const UPDATE_LOGO = gql`
     mutation updateLogo(
