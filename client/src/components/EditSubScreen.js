@@ -67,6 +67,15 @@ export default class EditSubScreen extends Component {
         }
     }
 
+    componentDidMount = () => {
+        let tempText = this.state.renderText;
+        tempText.map((e)=> delete e.__typename);
+        this.setState({ renderText: tempText});
+        let tempImage = this.state.renderImage;
+        tempImage.map((e)=> delete e.__typename);
+        this.setState({ renderImage: tempImage});
+    }
+
     handleText = (input) => {
         let tempText = this.state.renderText;
         if (input.target.value.trim().length < 1) {

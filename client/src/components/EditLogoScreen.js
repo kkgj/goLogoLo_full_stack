@@ -42,7 +42,7 @@ class EditLogoScreen extends Component {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
                     return(
-                    <EditSubScreen logo={data.logo}/>);
+                    <EditSubScreen history={this.props.history} logo={data.logo}/>);
                 }}
             </Query>
         );
