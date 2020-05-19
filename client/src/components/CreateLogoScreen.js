@@ -104,15 +104,18 @@ class CreateLogoScreen extends Component {
 
     handleAdd = () => {
         let tempText = this.state.renderText;
-        tempText.unshift({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
-        this.setState({ renderText: tempText, textIndex: 0, buttonDisabled: false, errorMessage: "", fontSizeMessage: "" });
+        tempText.push({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
+        let tempIndex = tempText.length - 1;
+        this.setState({ renderText: tempText, textIndex: tempIndex, buttonDisabled: false, errorMessage: "", fontSizeMessage: "" });
     }
 
     handleDelete = () => {
         if (this.state.renderText.length > 1) {
             let tempText = this.state.renderText;
-            tempText.splice(this.state.textIndex, 1);
-            this.setState({ textIndex: 0, renderText: tempText, buttonDisabled: false, errorMessage: "" });
+            //tempText.splice(this.state.textIndex, 1);
+            tempText.pop();
+            let tempIndex = tempText.length - 1
+            this.setState({ textIndex: tempIndex, renderText: tempText, buttonDisabled: false, errorMessage: "" });
         }
     }
 
@@ -305,7 +308,7 @@ class CreateLogoScreen extends Component {
                                                 <Rnd
                                                     bounds=".hello"
                                                     key={index}
-                                                    style={this.state.imageIndex === index ? { zIndex: "1" } : { zIndex: "0" }}
+                                                    style={{ zIndex: "1" }}
                                                     size={{ width: element.imageWidth, height: element.imageHeight }}
                                                     position={{ x: element.imageX, y: element.imageY }}
                                                     onDragStart={(e, d) => {
@@ -350,23 +353,21 @@ class CreateLogoScreen extends Component {
                                                 <Rnd
                                                     enableResizing="false"
                                                     bounds=".hello"
-                                                    style={this.state.textIndex === index ? { zIndex: "2" } : { zIndex: "1" }}
+                                                    style={ index === this.state.textIndex ? { zIndex: "3" } : { zIndex: "2" }}
                                                     key={index}
                                                     position={{ x: t.x, y: t.y }}
                                                     onDragStart={(e, d) => {
+                                                        let tempText = this.state.renderText;
                                                         if (t.text === "") {
-                                                            let tempText = this.state.renderText;
                                                             t.text = "Default Logo";
                                                             tempText[index] = t;
-                                                            this.setState({ renderText: tempText });
                                                         }
                                                         if (t.fontSize === "") {
-                                                            let tempText = this.state.renderText;
                                                             t.fontSize = 40;
                                                             tempText[index] = t;
-                                                            this.setState({ renderText: tempText });
                                                         }
                                                         this.setState({
+                                                            renderText: tempText,
                                                             textIndex: index,
                                                             buttonDisabled: false,
                                                             errorMessage: "",
@@ -375,11 +376,17 @@ class CreateLogoScreen extends Component {
                                                     }}
                                                     onDragStop={(e, d) => {
                                                         let tempText = this.state.renderText;
+                                                        let tempIndex = tempText.length - 1;
                                                         tempText[index].x = d.x;
                                                         tempText[index].y = d.y;
+                                                        if (index !== tempIndex) {
+                                                            let temp = tempText[index];
+                                                            tempText.splice(index, 1);
+                                                            tempText.push(temp);
+                                                        }
                                                         this.setState({
                                                             renderText: tempText,
-                                                            textIndex: index
+                                                            textIndex: tempIndex
                                                         });
                                                     }}>
                                                     <div
