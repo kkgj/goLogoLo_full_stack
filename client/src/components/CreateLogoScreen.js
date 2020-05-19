@@ -121,18 +121,16 @@ class CreateLogoScreen extends Component {
 
     handleAddImage = () => {
         let tempImage = this.state.renderImage;
-        tempImage.unshift({ image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 200, imageWidth: 120, imageX: 160, imageY: 30 });
-        this.setState({ renderImage: tempImage, imageIndex: 0 });
+        tempImage.push({ image: "https://i.picsum.photos/id/871/200/300.jpg", imageHeight: 200, imageWidth: 120, imageX: 160, imageY: 30 });
+        this.setState({ renderImage: tempImage, imageIndex: tempImage.length - 1 });
     }
 
     handleDeleteImage = () => {
         if (this.state.renderImage.length > 0) {
             let tempImage = this.state.renderImage;
-            tempImage.splice(this.state.imageIndex, 1);
-            this.setState({ imageIndex: 0, renderImage: tempImage });
-            if (this.state.renderImage.length === 0) {
-                this.setState({ imageIndex: -1 });
-            }
+            //tempImage.splice(this.state.imageIndex, 1);
+            tempImage.pop();
+            this.setState({ imageIndex: tempImage.length - 1, renderImage: tempImage });
         }
     }
 
@@ -308,7 +306,7 @@ class CreateLogoScreen extends Component {
                                                 <Rnd
                                                     bounds=".hello"
                                                     key={index}
-                                                    style={{ zIndex: "1" }}
+                                                    style={ index === this.state.imageIndex ? { zIndex: "1" } : { zIndex: "0" }}
                                                     size={{ width: element.imageWidth, height: element.imageHeight }}
                                                     position={{ x: element.imageX, y: element.imageY }}
                                                     onDragStart={(e, d) => {
@@ -323,19 +321,31 @@ class CreateLogoScreen extends Component {
                                                     }}
                                                     onDragStop={(e, d) => {
                                                         let tempImage = this.state.renderImage;
+                                                        let tempIndex = tempImage.length - 1;
                                                         tempImage[index].imageX = parseInt(d.x);
                                                         tempImage[index].imageY = parseInt(d.y);
-                                                        this.setState({ renderImage: tempImage })
+                                                        if (index !== tempIndex) {
+                                                            let temp = tempImage[index];
+                                                            tempImage.splice(index, 1);
+                                                            tempImage.push(temp);
+                                                        }
+                                                        this.setState({ renderImage: tempImage, imageIndex: tempIndex })
                                                     }}
                                                     onResizeStop={(e, direction, ref, delta, position) => {
                                                         let tempImage = this.state.renderImage;
+                                                        let tempIndex = tempImage.length - 1;
                                                         tempImage[index].imageX = parseInt(position.x);
                                                         tempImage[index].imageY = parseInt(position.y);
                                                         tempImage[index].imageHeight = parseInt(ref.style.height);
                                                         tempImage[index].imageWidth = parseInt(ref.style.width);
+                                                        if (index !== tempIndex) {
+                                                            let temp = tempImage[index];
+                                                            tempImage.splice(index, 1);
+                                                            tempImage.push(temp);
+                                                        }
                                                         this.setState({
                                                             renderImage: tempImage,
-                                                            imageIndex: index
+                                                            imageIndex: tempIndex
                                                         });
                                                     }}
                                                 >
