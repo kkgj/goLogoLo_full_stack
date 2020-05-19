@@ -62,7 +62,7 @@ export default class EditSubScreen extends Component {
             marginMessage: "",
             heightMessage: "",
             widthMessage: "",
-            textIndex: 0,
+            textIndex: props.logo.textArray.length - 1,
             imageIndex: 0,
         }
     }
@@ -117,15 +117,18 @@ export default class EditSubScreen extends Component {
 
     handleAdd = () => {
         let tempText = this.state.renderText;
-        tempText.unshift({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
-        this.setState({ renderText: tempText, textIndex: 0, buttonDisabled: false, errorMessage: "", fontSizeMessage: "" });
+        tempText.push({ text: "Default Logo", color: "#1f3eff", fontSize: 40, x: 5, y: 5 });
+        let tempIndex = tempText.length - 1;
+        this.setState({ renderText: tempText, textIndex: tempIndex, buttonDisabled: false, errorMessage: "", fontSizeMessage: "" });
     }
 
     handleDelete = () => {
         if (this.state.renderText.length > 1) {
             let tempText = this.state.renderText;
-            tempText.splice(this.state.textIndex, 1);
-            this.setState({ textIndex: 0, renderText: tempText, buttonDisabled: false, errorMessage: "" });
+            //tempText.splice(this.state.textIndex, 1);
+            tempText.pop();
+            let tempIndex = tempText.length - 1
+            this.setState({ textIndex: tempIndex, renderText: tempText, buttonDisabled: false, errorMessage: "" });
         }
     }
 
@@ -378,48 +381,52 @@ export default class EditSubScreen extends Component {
                                         <div style={{ position: "absolute" }}>
                                             {this.state.renderText.map((t, index) =>
                                                 <Rnd
-                                                    enableResizing="false"
-                                                    bounds=".hello"
-                                                    style={this.state.textIndex === index ? { zIndex: "2" } : { zIndex: "1" }}
-                                                    key={index}
-                                                    position={{ x: t.x, y: t.y }}
-                                                    onDragStart={(e, d) => {
-                                                        if (t.text === "") {
-                                                            let tempText = this.state.renderText;
-                                                            t.text = "Default Logo";
-                                                            tempText[index] = t;
-                                                            this.setState({ renderText: tempText });
-                                                        }
-                                                        if (t.fontSize === "") {
-                                                            let tempText = this.state.renderText;
-                                                            t.fontSize = 40;
-                                                            tempText[index] = t;
-                                                            this.setState({ renderText: tempText });
-                                                        }
-                                                        this.setState({
-                                                            textIndex: index,
-                                                            buttonDisabled: false,
-                                                            errorMessage: "",
-                                                            fontSizeMessage: ""
-                                                        })
-                                                    }}
-                                                    onDragStop={(e, d) => {
-                                                        let tempText = this.state.renderText;
-                                                        tempText[index].x = d.x;
-                                                        tempText[index].y = d.y;
-                                                        this.setState({
-                                                            renderText: tempText,
-                                                            textIndex: index
-                                                        });
+                                                enableResizing="false"
+                                                bounds=".hello"
+                                                style={ index === this.state.textIndex ? { zIndex: "3" } : { zIndex: "2" }}
+                                                key={index}
+                                                position={{ x: t.x, y: t.y }}
+                                                onDragStart={(e, d) => {
+                                                    let tempText = this.state.renderText;
+                                                    if (t.text === "") {
+                                                        t.text = "Default Logo";
+                                                        tempText[index] = t;
+                                                    }
+                                                    if (t.fontSize === "") {
+                                                        t.fontSize = 40;
+                                                        tempText[index] = t;
+                                                    }
+                                                    this.setState({
+                                                        renderText: tempText,
+                                                        textIndex: index,
+                                                        buttonDisabled: false,
+                                                        errorMessage: "",
+                                                        fontSizeMessage: ""
+                                                    })
+                                                }}
+                                                onDragStop={(e, d) => {
+                                                    let tempText = this.state.renderText;
+                                                    let tempIndex = tempText.length - 1;
+                                                    tempText[index].x = d.x;
+                                                    tempText[index].y = d.y;
+                                                    if (index !== tempIndex) {
+                                                        let temp = tempText[index];
+                                                        tempText.splice(index, 1);
+                                                        tempText.push(temp);
+                                                    }
+                                                    this.setState({
+                                                        renderText: tempText,
+                                                        textIndex: tempIndex
+                                                    });
+                                                }}>
+                                                <div
+                                                    style={{
+                                                        color: t.color,
+                                                        fontSize: t.fontSize ? t.fontSize + "px" : "40px",
                                                     }}>
-                                                    <div
-                                                        style={{
-                                                            color: t.color,
-                                                            fontSize: t.fontSize ? t.fontSize + "px" : "40px",
-                                                        }}>
-                                                        {t.text ? t.text : "Default Logo"}
-                                                    </div>
-                                                </Rnd>
+                                                    {t.text ? t.text : "Default Logo"}
+                                                </div>
+                                            </Rnd>
                                             )}
                                         </div>
                                     </span>
