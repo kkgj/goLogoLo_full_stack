@@ -49,7 +49,7 @@ class HomeScreen extends Component {
 
                     return (
                         <div className="container">
-                            <Link id="add_logo_button" to="/login" className={"btn btn-secondary btn-block"}>Login</Link>
+                            <Link id="add_logo_button" to="/auth/login" className={"btn btn-secondary btn-block"}>Login</Link>
                             <div className="container row">
                                 <div className="col s4">
                                     <h3>Recent Work</h3>

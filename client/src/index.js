@@ -19,7 +19,7 @@ ReactDOM.render(
     <ApolloProvider client={client}>
         <Router>
             <div>
-                <Route path='/login' component={LoginScreen} /> 
+                <Route path='/auth/login' component={LoginScreen} /> 
                 <Route exact path='/' component={HomeScreen} />
                 <Route path='/edit/:id' component={EditLogoScreen} />
                 <Route path='/create' component={CreateLogoScreen} />
