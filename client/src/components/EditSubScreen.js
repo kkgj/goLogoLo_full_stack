@@ -200,10 +200,10 @@ export default class EditSubScreen extends Component {
         return (
             <Mutation mutation={UPDATE_LOGO} key={this.props.logo._id} onCompleted={() => this.props.history.push(`/`)}>
                 {(updateLogo, { loading, error }) => (
-                    <div className="container">
+                    <div className="container pb-3 mb-2 bg-dark text-white">
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                                <h4><Link to="/" className={"btn btn-secondary btn-block"}>Home</Link></h4>
+                                <h4><Link to="/" className={"btn btn-light btn-block"}>Home</Link></h4>
                                 <h3 className="panel-title">
                                     Edit Logo
                                         </h3>

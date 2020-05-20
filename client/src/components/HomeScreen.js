@@ -49,8 +49,8 @@ class HomeScreen extends Component {
 
                     return (
                         <div className="container">
-                            <Link id="add_logo_button" to="/auth/login" className={"btn btn-secondary btn-block"}>Login</Link>
                             <div className="container row">
+                            <Link id="add_logo_button" to="/auth/login" className={"btn btn btn-light btn-block"}>Logout</Link>
                                 <div className="col s4">
                                     <h3>Recent Work</h3>
                                     {data.logos.sort((x, y) => -compareDates(x.lastUpdate, y.lastUpdate)).map((logo, index) => (
@@ -65,7 +65,7 @@ class HomeScreen extends Component {
                                         Logo Maker
                                     </div>
                                     <div>
-                                        <Link id="add_logo_button" to="/create" className={"btn btn-secondary btn-block"}>Add Logo</Link>
+                                        <Link id="add_logo_button" to="/create" className={"btn btn btn-primary btn-block"}>Add Logo</Link>
                                     </div>
                                 </div>
                             </div>

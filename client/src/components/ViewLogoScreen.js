@@ -60,10 +60,10 @@ class ViewLogoScreen extends Component {
                     if (error) return `Error! ${error.message}`;
 
                     return (
-                        <div className="container">
+                        <div className="container pb-3 mb-2 pl-3 pr-3 bg-dark text-white">
                             <div className="panel panel-default">
                                 <div className="panel-heading">
-                                    <h4><Link to="/" className={"btn btn-secondary btn-block"}>Home</Link></h4>
+                                    <h4><Link to="/" className={"btn btn-light btn-block"}>Home</Link></h4>
                                     <h3 className="panel-title">
                                         View Logo
                                     </h3>
@@ -109,9 +109,9 @@ class ViewLogoScreen extends Component {
                                                             }}>
                                                             <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
                                                         <button type="submit" className="btn btn-danger">Delete</button>&nbsp;
-                                                    </form>
-                                                        {loading && <p>Loading...</p>}
-                                                        {error && <p>Error :( Please try again</p>}
+                                                        </form>
+                                                            {loading && <p>Loading...</p>}
+                                                            {error && <p>Error :( Please try again</p>}
                                                     </div>
                                                 )}
                                             </Mutation>
