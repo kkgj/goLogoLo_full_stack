@@ -6,7 +6,7 @@ export default class LoginScreen extends Component {
         return (
             <div className="container">
                 <Link id="x" to="/" className={"btn btn-secondary btn-block"}>Go Home</Link>
-                <a className="google-btn" href="/google">Google+</a>
+                <a className="google-btn" href="http://localhost:3000/auth/google">Google+</a>
             </div>
         )
     }

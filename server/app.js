@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var graphqlHTTP = require('express-graphql');
 var schema = require('./graphql/logoSchemas');
 var cors = require("cors");
+const authRoutes = require('./authentication')
 
 mongoose.connect('mongodb://localhost/node-graphql', { promiseLibrary: require('bluebird'), useNewUrlParser: true })
   .then(() =>  console.log('connection successful'))
@@ -35,6 +36,8 @@ app.use('/graphql', cors(), graphqlHTTP({
   rootValue: global,
   graphiql: true,
 }));
+
+app.use('/auth',authRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
