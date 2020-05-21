@@ -50,7 +50,7 @@ class HomeScreen extends Component {
                     return (
                         <div className="container">
                             <div className="container row">
-                            <Link id="add_logo_button" to="/auth/login" className={"btn btn btn-light btn-block"}>Logout</Link>
+                                <Link id="add_logo_button" to="/auth/login" className={"btn btn btn-secondary btn-block"}>Logout</Link>
                                 <div className="col s4">
                                     <h3>Recent Work</h3>
                                     {data.logos.sort((x, y) => -compareDates(x.lastUpdate, y.lastUpdate)).map((logo, index) => (
