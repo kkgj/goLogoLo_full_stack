@@ -1,3 +1,7 @@
+## Setup MongoDB
+We can install mongoDB via HomeBrew, and start it using brew services start mongodb/brew/mongodb-community, stop it using brew services stop mongodb/brew/mongodb-community
+
+
 ## Setup for Google Client ID and Client secret
 We are using Google Login for user authentication, you may go to Google APIs "https://console.developers.google.com" and set up your own Client ID and Client secret for Web Application. Make sure you enabled "Google+ API" inside API Library. In "OAuth 2.0 Client", set "Authorized JavaScript origins" to be "http://localhost:3001", and set "Authorized redirect URIs" to be "http://localhost:3001/". Finally, find "authentication.js" in server folder and put your Client ID inside the constant "GOOGLE_ID" and Client secret inside the constant "GOOGLE_SECRET".
 
